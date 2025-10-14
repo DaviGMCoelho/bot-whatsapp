@@ -1,0 +1,25 @@
+version: '3'
+services:
+  evolution-api:
+    container_name: evolution_api
+    image: atendai/evolution-api:v1.8.2
+    restart: always
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    volumes:
+      - evolution_instances:/evolution/instances
+
+  bot-whatsapp:
+    build: .
+    container_name: bot_whatsapp
+    ports:
+      - "5000:5000"
+    depends_on:
+      - evolution-api
+    environment:
+      - FLASK_ENV=development
+
+volumes:
+  evolution_instances:
