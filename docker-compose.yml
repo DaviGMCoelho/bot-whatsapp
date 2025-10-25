@@ -11,15 +11,5 @@ services:
     volumes:
       - evolution_instances:/evolution/instances
 
-  bot-whatsapp:
-    build: .
-    container_name: bot_whatsapp
-    ports:
-      - "5000:5000"
-    depends_on:
-      - evolution-api
-    environment:
-      - FLASK_ENV=development
-
 volumes:
   evolution_instances:
