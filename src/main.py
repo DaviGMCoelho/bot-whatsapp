@@ -1,50 +1,60 @@
 import os
+
 import flask
+import datetime
+
 from dotenv import load_dotenv
 
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.runnables import RunnablePassthrough
-from langchain_community.vectorstores import FAISS
-from langchain_community.document_loaders import CSVLoader
-from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
-
 from service.message_service import EvolutionAPI
+from service.gemini_service import GeminiService
 
 load_dotenv()
-app = flask.Flask(__name__)
-loader = CSVLoader(file_path=r'data\base_dados.csv')
-documents = loader.load()
-embeddings = GoogleGenerativeAIEmbeddings(
-    model="models/text-embedding-004",
-    google_api_key=os.getenv("GOOGLE_API_KEY")
-    )
-vector_store = FAISS.from_documents(documents, embeddings)
-retrieval = vector_store.as_retriever()
-evolution = EvolutionAPI()
-
-llm = ChatGoogleGenerativeAI(model='gemini-2.5-flash', temperature=0)
-
-TEMPLATE = '''Você é um vendedor de uma loja de roupas e precisa responder as perguntas do cliente
-Esse é o contexto que você deve usar para responder: {context}
-Essa é a pergunta que você deve responder: {pergunta}'''
-prompt = ChatPromptTemplate.from_template(TEMPLATE)
-
-chain = (
-    {"context": retrieval, "pergunta": RunnablePassthrough()}
-    | prompt
-    | llm
+evolution = EvolutionAPI(str(os.getenv("AUTHENTICATION_API_KEY")))
+gemini = GeminiService(
+    api_key=os.getenv("GOOGLE_API_KEY"),
+    document=r'data\base_dados.csv',
+    temperature=0
 )
+
+app = flask.Flask(__name__)
+
+def get_user_message(message_data: dict):
+    msg_type = message_data.get('messageType')
+    if msg_type == 'conversation' or 'conversation' in message_data:
+        return message_data.get('conversation')
+    elif msg_type == 'extendedTextMessage' or 'extendedTextMessage' in message_data:
+        return message_data.get('extendedTextMessage').get('text')
+    else:
+        print("tipo não reconhecido:", msg_type, message_data)
+        return None
+
+def log_error(e):
+    if not os.path.exists("logs"):
+        os.mkdir('logs')
+    timestamp = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+    filename = f'logs/{type(e).__name__}-{timestamp}.txt'
+
+    with open(filename, 'a', encoding='utf-8') as file:
+        file.write(str(e))
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
-    data = flask.request.json
-    instance = data['instance']
-    sender_number = data['data']['key']['remoteJid'].split('@')[0]
-    message = chain.invoke(data['data']['message']['extendedTextMessage']['text'])
-    text_message = str(message.content)
-    evolution.send_message(instance, sender_number, text_message)
+    try:
+        data = flask.request.json
+        instance = data['instance']
+        sender_number = data['data']['key']['remoteJid'].split('@')[0]
 
-    return flask.jsonify(message.content)
+        user_message = get_user_message(data['data']['message'])
+        if not user_message:
+            return "No valid text message", 400
+
+        message = gemini.generate_message(user_message)
+        evolution.send_message(instance, sender_number, message)
+        return flask.jsonify(message)
+
+    except Exception as e:
+        log_error(e)
+        return flask.jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
