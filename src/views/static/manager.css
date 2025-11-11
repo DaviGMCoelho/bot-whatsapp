@@ -1,0 +1,17 @@
+@charset "UTF-8";
+
+body{
+    background-color: #DEF1ED;
+    background-position: center ;
+    background-repeat: no-repeat ;
+    background-size: cover ;
+}
+
+.data_input{
+    margin: 10% 25% 5% 25% ;
+    box-shadow: 2px 5px 5px rgb(0, 0, 0) ;
+    background-color: rgba(253, 253, 253, 0.603) ;
+    text-align: center ;
+    font-weight: bold ;
+    border-radius: 10px ;
+}

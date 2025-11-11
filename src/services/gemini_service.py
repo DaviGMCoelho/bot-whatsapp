@@ -1,4 +1,3 @@
-import os
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 from langchain_community.vectorstores import FAISS

@@ -1,0 +1,40 @@
+==<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title> Configurações </title>
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='manager.css') }}">
+    </head>
+
+    <body>
+        <h1 class="title" id="page_title"> Configurações do Sistema </h1>
+        <div class="container-data" id="enviroment-data">
+            <h2 class="title" id="session_title"> Variáveis de Ambiente </h2>
+            <div class="data_input" id="api_key_container">
+                <h3 class="title" id="api_key_title"> Chaves de API </h3>
+
+                <label for="gemini_api_key"> Chave API Gemini: </label>
+                <input type="text" id="gemini_api_key" name="gemini_api_key"><br>
+
+                <label for="evolution_api_key"> Chave API Evolution: </label>
+                <input type="text" id="evolution_api_key" name="evolution_api_key"><br>
+            </div>
+
+            <div class="data_input" id="context_data_container">
+                <h3 class="title" id="context_data_title"> Arquivos de contexto </h3>
+
+                <label for="google_sheets_id"> ID da planilha: </label>
+                <input type="text" id="google_sheets_id" name="google_sheets_id"><br>
+
+                <label for="google_sheet_name"> Nome da página: </label>
+                <input type="text" id="google_sheet_name" name="google_sheet_name"><br>
+            </div>
+            <div>
+                <input type="submit" value="Confirmar"><br>
+            </div>
+        </div>
+    </body>
+    </body>
+</html>

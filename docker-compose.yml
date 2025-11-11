@@ -1,8 +1,7 @@
-version: '3'
 services:
   evolution-api:
     container_name: evolution_api
-    image: atendai/evolution-api:v1.8.2
+    image: atendai/evolution-api:v2.1.1
     restart: always
     ports:
       - "8080:8080"
@@ -10,6 +9,38 @@ services:
       - .env
     volumes:
       - evolution_instances:/evolution/instances
+    networks:
+      - evolution-networks
+
+  postgres:
+    container_name: evolution_postgres
+    image: postgres:12
+    restart: always
+    ports:
+      - "5441:5432"
+    env_file:
+      - .env
+    volumes:
+      - evolution_postgres:/var/lib/postgresql/data
+    networks:
+      - evolution-networks
+
+  redis:
+    container_name: evolution_redis
+    image: redis:6
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - evolution_redis:/data
+    networks:
+      - evolution-networks
 
 volumes:
   evolution_instances:
+  evolution_postgres:
+  evolution_redis:
+
+networks:
+  evolution-networks:
+    driver: bridge

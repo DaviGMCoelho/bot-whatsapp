@@ -5,8 +5,8 @@ import datetime
 
 from dotenv import load_dotenv
 
-from service.message_service import EvolutionAPI
-from service.gemini_service import GeminiService
+from services.message_service import EvolutionAPI
+from services.gemini_service import GeminiService
 
 load_dotenv()
 evolution = EvolutionAPI(str(os.getenv("AUTHENTICATION_API_KEY")))
@@ -16,7 +16,9 @@ gemini = GeminiService(
     temperature=0
 )
 
-app = flask.Flask(__name__)
+app = flask.Flask(__name__,
+                  template_folder=r'views\templates',
+                  static_folder=r'views\static')
 
 def get_user_message(message_data: dict):
     msg_type = message_data.get('messageType')
@@ -55,6 +57,10 @@ def webhook():
     except Exception as e:
         log_error(e)
         return flask.jsonify({"error": str(e)}), 500
+
+@app.route('/manager')
+def manager():
+    return flask.render_template('manager.html', titulo='Configurações')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
