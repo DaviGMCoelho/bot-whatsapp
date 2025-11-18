@@ -5,8 +5,8 @@ import datetime
 
 from dotenv import load_dotenv
 
-from services.message_service import EvolutionAPI
-from services.gemini_service import GeminiService
+from src.services.message_service import EvolutionAPI
+from src.services.gemini_service import GeminiService
 
 load_dotenv()
 evolution = EvolutionAPI(str(os.getenv("AUTHENTICATION_API_KEY")))
@@ -16,9 +16,11 @@ gemini = GeminiService(
     temperature=0
 )
 
-app = flask.Flask(__name__,
-                  template_folder=r'views\templates',
-                  static_folder=r'views\static')
+app = flask.Flask(
+    __name__,
+    template_folder=r'views\templates',
+    static_folder=r'views\static'
+)
 
 def get_user_message(message_data: dict):
     msg_type = message_data.get('messageType')
@@ -44,14 +46,14 @@ def webhook():
     try:
         data = flask.request.json
         instance = data['instance']
-        sender_number = data['data']['key']['remoteJid'].split('@')[0]
+        remote_jid = data['data']['key']['remoteJid']
 
         user_message = get_user_message(data['data']['message'])
         if not user_message:
             return "No valid text message", 400
 
         message = gemini.generate_message(user_message)
-        evolution.send_message(instance, sender_number, message)
+        evolution.send_message(instance, remote_jid.split('@')[0], message)
         return flask.jsonify(message)
 
     except Exception as e:
@@ -64,3 +66,4 @@ def manager():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
+

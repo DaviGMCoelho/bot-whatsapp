@@ -36,7 +36,8 @@ class GeminiService:
         template = (
             "Você é um vendedor de uma loja de roupas e precisa responder as perguntas do cliente.\n"
             "Contexto para usar ao responder: {context}\n"
-            "Pergunta que você deve responder: {pergunta}"
+            "Pergunta que você deve responder: {pergunta}\n"
+            "Esse é o histórico das mensagens anteriores: {messages_history}"
         )
         prompt = ChatPromptTemplate.from_template(template)
         retrieval = self.vector_store.as_retriever()

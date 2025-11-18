@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+.title{
+    text-align: center ;
+}
+
 body{
     background-color: #DEF1ED;
     background-position: center ;
@@ -7,11 +11,18 @@ body{
     background-size: cover ;
 }
 
-.data_input{
-    margin: 10% 25% 5% 25% ;
+.container-data{
+    display: flex ;
+    margin: 0% 25% 0% 25% ;
     box-shadow: 2px 5px 5px rgb(0, 0, 0) ;
     background-color: rgba(253, 253, 253, 0.603) ;
     text-align: center ;
     font-weight: bold ;
-    border-radius: 10px ;
+    border-radius: 100px ;
+    padding: 15px ;
+}
+
+.data-input{
+    flex: 1 ;
+    margin: 10px ;
 }
