@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 
 from src.services.message_service import EvolutionAPI
 from src.services.gemini_service import GeminiService
+from src.repositories.postgres.postgres_repository import PostgreManagerRepository
 
 load_dotenv()
 evolution = EvolutionAPI(str(os.getenv("AUTHENTICATION_API_KEY")))
@@ -65,5 +66,10 @@ def manager():
     return flask.render_template('manager.html', titulo='Configurações')
 
 if __name__ == '__main__':
+    manager_repo = PostgreManagerRepository()
+    status = manager_repo.init_database()
+    if status == 200:
+        print('banco criado')
+    else:
+        print(status)
     app.run(host='0.0.0.0', port=5000, debug=True)
-

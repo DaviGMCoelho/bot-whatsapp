@@ -1,5 +1,5 @@
 select 
-	msg."key",
+	msg."key" ->> 'fromMe',
 	msg."message" ->> 'conversation'
 from "Instance" as ins
 inner join "Message" as msg

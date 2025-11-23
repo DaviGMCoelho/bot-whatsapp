@@ -3,7 +3,7 @@ from src.repositories.connection_pg import PostgresConn
 
 class PostgresBaseRepository(ABC):
     def __init__(self):
-        self._connection = PostgresConn()
+        self._connection = PostgresConn().get_connection()
 
     def _load_query(self, query_path: str):
         with open(query_path, 'r', encoding='utf-8') as query:
