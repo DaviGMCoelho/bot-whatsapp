@@ -6,3 +6,5 @@ inner join "Message" as msg
 	on msg."instanceId" = ins."id"
 where msg."key" ->> 'remoteJid' = %(remoteJid)s
 	and ins."name" = %(instance)s
+order by msg."messageTimestamp" desc
+fetch first 30 rows only;

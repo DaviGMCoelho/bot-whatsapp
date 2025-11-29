@@ -1,26 +1,20 @@
 import os
+import datetime
+import traceback
 
 import flask
-import datetime
 
 from dotenv import load_dotenv
 
-from src.services.message_service import EvolutionAPI
-from src.services.gemini_service import GeminiService
-from src.repositories.postgres.postgres_repository import PostgreManagerRepository
+from src.controllers.message_controller import MessageController
 
 load_dotenv()
-evolution = EvolutionAPI(str(os.getenv("AUTHENTICATION_API_KEY")))
-gemini = GeminiService(
-    api_key=os.getenv("GOOGLE_API_KEY"),
-    document=r'data\base_dados.csv',
-    temperature=0
-)
+message = MessageController()
 
 app = flask.Flask(
     __name__,
-    template_folder=r'views\templates',
-    static_folder=r'views\static'
+    template_folder=r'src\views\templates',
+    static_folder=r'src\views\static'
 )
 
 def get_user_message(message_data: dict):
@@ -34,13 +28,14 @@ def get_user_message(message_data: dict):
         return None
 
 def log_error(e):
-    if not os.path.exists("logs"):
-        os.mkdir('logs')
-    timestamp = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-    filename = f'logs/{type(e).__name__}-{timestamp}.txt'
+    print(e)
+    #if not os.path.exists("src/data/logs"):
+    #    os.mkdir('src/data/logs')
+    #timestamp = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+    #filename = f'{type(e).__name__}-{timestamp}.txt'
 
-    with open(filename, 'a', encoding='utf-8') as file:
-        file.write(str(e))
+    #with open(filename, 'a', encoding='utf-8') as file:
+    #    file.write(str(e))
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
@@ -51,14 +46,13 @@ def webhook():
 
         user_message = get_user_message(data['data']['message'])
         if not user_message:
-            return "No valid text message", 400
+            return flask.jsonify({"error": "No valid text message"}), 400
 
-        message = gemini.generate_message(user_message)
-        evolution.send_message(instance, remote_jid.split('@')[0], message)
-        return flask.jsonify(message)
+        message.process_data(instance, remote_jid, user_message)
+        return flask.jsonify({"status": 'sucess'}), 200
 
     except Exception as e:
-        log_error(e)
+        log_error(traceback.format_exc())
         return flask.jsonify({"error": str(e)}), 500
 
 @app.route('/manager')
@@ -66,10 +60,4 @@ def manager():
     return flask.render_template('manager.html', titulo='Configurações')
 
 if __name__ == '__main__':
-    manager_repo = PostgreManagerRepository()
-    status = manager_repo.init_database()
-    if status == 200:
-        print('banco criado')
-    else:
-        print(status)
     app.run(host='0.0.0.0', port=5000, debug=True)

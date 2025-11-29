@@ -10,7 +10,7 @@ class MessageRepository (PostgresBaseRepository):
         messages = cursor.fetchall()
         message_history = [
             {
-                'role': 'cliente' if role == 'true' else 'bot',
+                'role': 'bot' if role == 'true' else 'client',
                 'content': content
             }
             for role, content in messages
