@@ -1,9 +1,12 @@
 import os
+from dotenv import load_dotenv
 
 from src.services.evolution_service import EvolutionService
 from src.services.gemini_service import GeminiService
 from src.repositories.postgres.message_repository import MessageRepository
 class MessageService:
+    load_dotenv()
+
     def __init__(self):
         self.evolution = EvolutionService(os.getenv("AUTHENTICATION_API_KEY"))
         self.gemini = GeminiService(os.getenv("GOOGLE_API_KEY"), r'data\base_dados.csv', 0)
