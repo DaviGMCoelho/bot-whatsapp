@@ -1,14 +1,13 @@
 CREATE SCHEMA IF NOT EXISTS personal;
 
-CREATE TABLE personal.Tax_type(
+CREATE TABLE personal.Credentials(
     id int generated always as identity primary key,
-    tax_type varchar(10)
+    company_id int not null references personal.Company(id) ON DELETE CASCADE,
+    credential TEXT not null
 );
 
 CREATE TABLE personal.Company(
     id int generated always as identity primary key,
-    tax_type_id int not null references personal.Tax_type(id) ON DELETE RESTRICT,
-    tax_code varchar(50) not null,
     name varchar(50) not null,
     operation jsonb not null,
     active boolean not null default TRUE

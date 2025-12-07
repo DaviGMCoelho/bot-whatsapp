@@ -9,34 +9,30 @@
     </head>
 
     <body>
-        <h1 class="title" id="page_title"> Configurações do Sistema </h1>
+        <div class="main-container">
         
-        <h2 class="title" id="session_title"> Variáveis de Ambiente </h2>
-        <div class="container-data" id="enviroment-data">
-            <div class="data_input" id="api_key_container">
-                <h3 class="title" id="api_key_title"> Chaves de API </h3>
+        <h1 class="main-title">Configurações do Sistema</h1>
+        
+        <div class="content-wrapper">
+            <h2 class="subtitle">Variáveis de Ambiente</h2>
+            <h3 class="section-header">Chaves das APIs</h3>
 
-                <label for="gemini_api_key"> Chave API Gemini: </label>
-                <input type="text" id="gemini_api_key" name="gemini_api_key"><br>
+            <form class="config-form" method="POST">
+                
+                <div class="input-group">
+                    <label for="gemini">API Gemini</label>
+                    <input type="text" id="gemini" name="gemini">
+                </div>
 
-                <label for="evolution_api_key"> Chave API Evolution: </label>
-                <input type="text" id="evolution_api_key" name="evolution_api_key"><br>
-            </div>
+                <div class="input-group">
+                    <label for="evolution">API Evolution</label>
+                    <input type="text" id="evolution" name="evolution">
+                </div>
 
-            <div class="data_input" id="context_data_container">
-                <h3 class="title" id="context_data_title"> Arquivos de contexto </h3>
-
-                <label for="google_sheets_id"> ID da planilha: </label>
-                <input type="text" id="google_sheets_id" name="google_sheets_id"><br>
-
-                <label for="google_sheet_name"> Nome da página: </label>
-                <input type="text" id="google_sheet_name" name="google_sheet_name"><br>
-            </div>
-            <div>
-                <input type="submit" value="Confirmar"><br>
-            </div>
+                <button type="submit" class="btn-save">Salvar</button>
+            </form>
         </div>
-        
-    </body>
+
+    </div>
     </body>
 </html>

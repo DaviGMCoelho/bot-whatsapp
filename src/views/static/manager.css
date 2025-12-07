@@ -1,28 +1,109 @@
-@charset "UTF-8";
-
-.title{
-    text-align: center ;
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-body{
-    background-color: #DEF1ED;
-    background-position: center ;
-    background-repeat: no-repeat ;
-    background-size: cover ;
+body {
+    /* Centraliza o conteúdo na tela */
+    display: flex;
+    justify-content: center;
+    padding-top: 80px; /* Espaço do topo */
+    min-height: 100vh;
+    
+    /* CONFIGURAÇÃO DO FUNDO */
+    /* Substitua o nome do arquivo se necessário */
+    background: url('image_a18f1b.jpg') no-repeat center center fixed;
+    background-size: cover;
+    
+    /* Cor de fundo alternativa caso a imagem não carregue */
+    background-color: #e0e0e0;
 }
 
-.container-data{
-    display: flex ;
-    margin: 0% 25% 0% 25% ;
-    box-shadow: 2px 5px 5px rgb(0, 0, 0) ;
-    background-color: rgba(253, 253, 253, 0.603) ;
-    text-align: center ;
-    font-weight: bold ;
-    border-radius: 100px ;
-    padding: 15px ;
+.main-container {
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
 }
 
-.data-input{
-    flex: 1 ;
-    margin: 10px ;
+/* Tipografia */
+.main-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 40px; /* Distância entre o título principal e o resto */
+}
+
+.subtitle {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.section-header {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 25px;
+}
+
+/* Estilo do Formulário */
+.config-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px; /* Espaço entre os inputs */
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 15px; /* Espaço entre o label e o input */
+}
+
+label {
+    font-size: 18px;
+    color: #000;
+    /* Define uma largura para os labels para que os inputs fiquem alinhados */
+    width: 120px; 
+    text-align: right;
+}
+
+input {
+    width: 200px;
+    padding: 8px 15px;
+    border-radius: 20px; /* Arredondamento tipo pílula */
+    border: none;
+    background-color: #f5f5f5; /* Cor quase branca */
+    outline: none;
+    font-size: 16px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+}
+
+input:focus {
+    background-color: #fff;
+    box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
+}
+
+/* Botão Salvar */
+.btn-save {
+    margin-top: 20px;
+    background-color: #5D8A8A; /* Tom de verde/azulado da imagem */
+    color: #000; /* Texto preto conforme imagem */
+    font-weight: 700;
+    font-size: 16px;
+    padding: 8px 40px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: background 0.2s;
+}
+
+.btn-save:hover {
+    background-color: #4b7070; /* Cor um pouco mais escura ao passar o mouse */
+    color: #fff;
 }
