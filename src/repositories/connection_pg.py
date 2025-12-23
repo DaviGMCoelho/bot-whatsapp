@@ -1,3 +1,4 @@
+import time
 import os
 import psycopg2
 
@@ -6,16 +7,14 @@ class PostgresConn:
         self.db_name = os.getenv("POSTGRES_DB")
         self.user = os.getenv("POSTGRES_USER")
         self.password = os.getenv("POSTGRES_PASSWORD")
-        self.host = 'localhost'
-        self.port = "5441"
+        self.host = os.getenv("POSTGRES_HOST")
+        self.port = int(os.getenv("POSTGRES_PORT"))
 
     def get_connection(self):
-        connection = psycopg2.connect(
+        return psycopg2.connect(
             dbname = self.db_name,
             user = self.user,
             password = self.password,
             host = self.host,
             port = self.port
         )
-        cursor = connection.cursor()
-        return connection, cursor

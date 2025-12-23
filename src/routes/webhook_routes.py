@@ -12,15 +12,18 @@ def log_error(e):
 @webhook_bp.route('/webhook', methods=['POST'])
 def webhook():
     try:
-        data = request.json
-        instance = data['instance']
-        remote_jid = data['data']['key']['remoteJid']
+        data = request.get_json()
+        from_me = data['data']['key']['fromMe']
 
-        user_message = message.get_message_type(data['data']['message'])
-        if not user_message:
-            return jsonify({"error": "No valid text message"}), 400
+        if not from_me:
+            instance = data['instance']
+            remote_jid = data['data']['key']['remoteJidAlt']
+            user_message = message.get_message_type(data['data']['message'])
+            if not user_message:
+                return jsonify({"error": "No valid text message"}), 400
 
-        message.process_data(instance, remote_jid, user_message)
+            message.process_data(instance, remote_jid, user_message)
+            return jsonify({"status": 'sucess'}), 200
         return jsonify({"status": 'sucess'}), 200
 
     except Exception as e:

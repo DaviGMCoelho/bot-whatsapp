@@ -1,7 +1,7 @@
 services:
   evolution-api:
     container_name: evolution_api
-    image: atendai/evolution-api:v2.1.1
+    image: evoapicloud/evolution-api:v2.3.6
     restart: always
     ports:
       - "8080:8080"
@@ -35,6 +35,26 @@ services:
       - evolution_redis:/data
     networks:
       - evolution-networks
+
+  # flask:
+  #  container_name: flask_server
+  #  build:
+  #    context: .
+  #    dockerfile: Dockerfile
+  #  restart: always
+  #  ports: 
+  #     - "5001:5000"
+  #  volumes:
+  #    - .:/app
+  #  env_file:
+  #    - .env
+  #  depends_on:
+  #    - postgres
+  #    - redis
+  #  networks:
+  #    - evolution-networks
+    
+
 
 volumes:
   evolution_instances:

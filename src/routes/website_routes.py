@@ -1,5 +1,4 @@
 from flask import Blueprint, render_template, request
-from flask_wtf import FlaskForm
 
 website_bp = Blueprint("manager", __name__)
 

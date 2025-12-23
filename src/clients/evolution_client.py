@@ -1,15 +1,19 @@
+import os
+
 import requests
 
 class EvolutionClient:
     def __init__(self, api_key: str):
+        host = os.getenv("EVOLUTION_API_HOST", "evolution-api")
+        
+        self.base_url = f'http://{host}:8080'
         self.headers = {
             "apikey": api_key,
             "Content-Type": "application/json"
         }
 
     def send_message(self, instance, sender_number, message):
-        base_url = "localhost:8080"
-        url = f"http://{base_url}/message/sendText/{instance}"
+        url = f"{self.base_url}/message/sendText/{instance}"
 
         payload = {
             "number": sender_number,

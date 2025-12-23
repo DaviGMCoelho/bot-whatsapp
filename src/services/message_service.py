@@ -6,10 +6,12 @@ from src.services.gemini_service import GeminiService
 from src.repositories.postgres.message_repository import MessageRepository
 class MessageService:
     load_dotenv()
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+    CSV_PATH = os.path.join(BASE_DIR, "data", "base_dados.csv")
 
     def __init__(self):
         self.evolution = EvolutionService(os.getenv("AUTHENTICATION_API_KEY"))
-        self.gemini = GeminiService(os.getenv("GOOGLE_API_KEY"), r'data\base_dados.csv', 0)
+        self.gemini = GeminiService(os.getenv("GOOGLE_API_KEY"), MessageService.CSV_PATH, 0)
         self.repository = MessageRepository()
 
     def process_message(self, instance, remote_jid, user_message):
