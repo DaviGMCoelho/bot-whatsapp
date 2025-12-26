@@ -1,26 +1,30 @@
 import os
 from dotenv import load_dotenv
-
+from src.database.connection_pg import PostgresConn
 from src.services.evolution_service import EvolutionService
 from src.services.gemini_service import GeminiService
-from src.repositories.postgres.message_repository import MessageRepository
+from src.repositories.postgres.message.message_repository import MessageRepository
 class MessageService:
-    load_dotenv()
-    BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-    CSV_PATH = os.path.join(BASE_DIR, "data", "base_dados.csv")
-
-    def __init__(self):
-        self.evolution = EvolutionService(os.getenv("AUTHENTICATION_API_KEY"))
-        self.gemini = GeminiService(os.getenv("GOOGLE_API_KEY"), MessageService.CSV_PATH, 0)
-        self.repository = MessageRepository()
+    def __init__(self,
+                 psql_conn: PostgresConn,
+                 evolution_service: EvolutionService,
+                 gemini_service: GeminiService,
+                 repository: MessageRepository
+                 ):
+        self.psql_conn = psql_conn
+        self.evolution = evolution_service
+        self.gemini = gemini_service
+        self.repository = repository
 
     def process_message(self, instance, remote_jid, user_message):
         customer_info = ''
         history = ''
-        conversation_history = self.repository.message_history(remote_jid, instance)
 
-        if conversation_history:
-            for message in conversation_history:
+        with self.psql_conn.connect() as conn:
+            messages = self.repository.message_history(conn, remote_jid, instance)
+
+        if messages:
+            for message in messages:
                 history += f'{message['role']}: {message['content']}\n'
 
         response = self.gemini.generate_message(user_message, customer_info, history)

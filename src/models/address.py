@@ -1,4 +1,4 @@
-class Addres:
+class Address:
     def __init__(self, state, city, neighborhood, street, number, postal_code, complement, label, company):
         self.state = state
         self.city = city

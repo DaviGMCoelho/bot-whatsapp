@@ -1,3 +1,6 @@
+import os
+from dotenv import load_dotenv
+
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_community.vectorstores import FAISS
 from langchain_community.document_loaders import CSVLoader
@@ -5,11 +8,11 @@ from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
 from src.clients.gemini_client import GeminiClient
 class GeminiService:
-    def __init__(self, api_key: str, document: str, temperature: float):
-        self.api_key = api_key
+    load_dotenv()
+
+    def __init__(self, client: GeminiClient, document: str):
         self.document_path = document
-        self.temperature = temperature
-        self.client = GeminiClient(self.api_key, self.temperature)
+        self.client = client
 
         self.embeddings = self._create_embeddings()
         self.vector_store = self._create_vector_store()
@@ -18,7 +21,7 @@ class GeminiService:
     def _create_embeddings(self):
         return GoogleGenerativeAIEmbeddings(
             model="models/text-embedding-004",
-            google_api_key=self.api_key
+            google_api_key = os.getenv("GOOGLE_API_KEY")
         )
 
     def _create_vector_store(self):

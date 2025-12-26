@@ -1,11 +1,5 @@
 CREATE SCHEMA IF NOT EXISTS personal;
 
-CREATE TABLE personal.Credentials(
-    id int generated always as identity primary key,
-    company_id int not null references personal.Company(id) ON DELETE CASCADE,
-    credential TEXT not null
-);
-
 CREATE TABLE personal.Company(
     id int generated always as identity primary key,
     name varchar(50) not null,
@@ -22,37 +16,6 @@ CREATE TABLE personal.Customer(
 CREATE TABLE personal.Session_Status(
     id int generated always as identity primary key,
     status varchar(50) not null
-);
-
-CREATE TABLE personal.Session(
-    id int generated always as identity primary key,
-    status_id int not null references personal.Session_Status(id) ON DELETE RESTRICT,
-    customer_id int not null references personal.Customer(id) ON DELETE CASCADE,
-    company_id int not null references personal.Company(id) ON DELETE CASCADE,
-    started_at TIMESTAMPTZ not null default CURRENT_TIMESTAMP,
-    updated_at TIMESTAMPTZ,
-    closed_at TIMESTAMPTZ,
-    summary jsonb not null
-);
-
-CREATE TABLE personal.Address(
-    id int generated always as identity primary key,
-    state varchar(100) not null,
-    city varchar(100) not null,
-    neighborhood varchar(100) not null,
-    street varchar(255) not null,
-    number varchar(20) not null,
-    postal_code varchar(20) not null,
-    complement varchar(255),
-    label varchar(100),
-    company_id int not null references personal.Company(id) ON DELETE CASCADE
-);
-
-CREATE TABLE personal.Instance_Hub(
-    id int generated always as identity primary key,
-    name varchar(255) not null,
-    company_id int not null references personal.Company(id) ON DELETE CASCADE,
-    instance_id text not null
 );
 
 CREATE TABLE personal.Offer(
@@ -76,4 +39,41 @@ CREATE TABLE personal.Items(
     price numeric(10,2) not null,
     catalog_id int not null references personal.Catalog(id) ON DELETE CASCADE,
     active boolean not null default TRUE
+);
+
+CREATE TABLE personal.Address(
+    id int generated always as identity primary key,
+    state varchar(100) not null,
+    city varchar(100) not null,
+    neighborhood varchar(100) not null,
+    street varchar(255) not null,
+    number varchar(20) not null,
+    postal_code varchar(20) not null,
+    complement varchar(255),
+    label varchar(100),
+    company_id int not null references personal.Company(id) ON DELETE CASCADE
+);
+
+CREATE TABLE personal.Instance_Hub(
+    id int generated always as identity primary key,
+    name varchar(255) not null,
+    company_id int not null references personal.Company(id) ON DELETE CASCADE,
+    instance_id text not null
+);
+
+CREATE TABLE personal.Credentials(
+    id int generated always as identity primary key,
+    company_id int not null references personal.Company(id) ON DELETE CASCADE,
+    credential TEXT not null
+);
+
+CREATE TABLE personal.Session(
+    id int generated always as identity primary key,
+    status_id int not null references personal.Session_Status(id) ON DELETE RESTRICT,
+    customer_id int not null references personal.Customer(id) ON DELETE CASCADE,
+    company_id int not null references personal.Company(id) ON DELETE CASCADE,
+    started_at TIMESTAMPTZ not null default CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ,
+    closed_at TIMESTAMPTZ,
+    summary jsonb not null
 );

@@ -3,9 +3,7 @@ import os
 import requests
 
 class EvolutionClient:
-    def __init__(self, api_key: str):
-        host = os.getenv("EVOLUTION_API_HOST", "evolution-api")
-        
+    def __init__(self, api_key: str, host: str):
         self.base_url = f'http://{host}:8080'
         self.headers = {
             "apikey": api_key,

@@ -1,7 +1,7 @@
 from langchain_google_genai import ChatGoogleGenerativeAI
 
 class GeminiClient:
-    def __init__(self, api_key: str, temperature: float):
+    def __init__(self, api_key: str, temperature: float = 0.0):
         self.api_key = api_key
         self.temperature = temperature
         self.model = self._initialize_model()
