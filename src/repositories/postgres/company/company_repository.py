@@ -1,6 +1,6 @@
 from psycopg2.extensions import connection
 from src.repositories.postgres.base_repository import PostgresBaseRepository
-from src.models.company import Company
+from src.domains.models.company import Company
 
 
 class CompanyRepository (PostgresBaseRepository):
@@ -9,6 +9,7 @@ class CompanyRepository (PostgresBaseRepository):
         with conn.cursor() as cursor:
             cursor.execute(sql_query, {
                 'name': company.name,
-                'operation': company.opertation
+                'operation': company.operation.to_json()
                 })
+            print('adicionando no repo')
             return cursor.fetchone()[0]

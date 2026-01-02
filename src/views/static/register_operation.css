@@ -1,0 +1,141 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    height: 100vh;
+    background: #f2f2f2;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 70px;
+    background-color: #1aa59a;
+}
+
+/* Conteúdo */
+.content {
+    flex: 1;
+    padding: 40px;
+    background: #f7f7f7;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header h1 {
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.settings {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Form */
+.form-section {
+    margin-top: 40px;
+}
+
+.form-section h2 {
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+form {
+    max-width: 600px;
+}
+
+/* Rows */
+.row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.row label {
+    width: 150px;
+    font-weight: bold;
+}
+
+.row input[type="time"] {
+    width: 120px;
+    padding: 6px;
+    margin-right: 10px;
+    border: 1px solid #999;
+    border-radius: 3px;
+}
+
+/* Switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.3s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+}
+
+.switch input:checked + .slider {
+    background-color: #3b33ff;
+}
+
+.switch input:checked + .slider:before {
+    transform: translateX(20px);
+}
+
+/* Botão */
+.btn-salvar {
+    margin-top: 30px;
+    padding: 10px 30px;
+    background-color: #5fa7a0;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    float: right;
+}
+
+.btn-salvar:hover {
+    background-color: #4b8f89;
+}

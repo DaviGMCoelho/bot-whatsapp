@@ -1,6 +1,6 @@
 import os
-from dotenv import load_dotenv
 from pathlib import Path
+from dotenv import load_dotenv
 
 from flask import Flask
 
@@ -19,6 +19,7 @@ from src.services.message_service import MessageService
 from src.services.company_service import CompanyService
 
 from src.controllers.message_controller import MessageController
+from src.controllers.company_controller import CompanyController
 
 from src.routes.website_routes import website_bp
 from src.routes.webhook_routes import webhook_bp
@@ -48,7 +49,7 @@ def init_dependencies(app: Flask):
     psql_company_repo = CompanyRepository()
     psql_address_repo = AddressRepository()
 
-    if app.config["POSTGRES"]["PSQL_MIGRATIONS"] == True:
+    if app.config["POSTGRES"]["PSQL_MIGRATIONS"] is True:
         init_database(conn_postgres)
 
     evolution_service = EvolutionService(evolution_client)
@@ -57,9 +58,11 @@ def init_dependencies(app: Flask):
     company_service = CompanyService(conn_postgres, psql_company_repo, psql_address_repo)
 
     message_controller = MessageController(message_service)
+    company_controller = CompanyController(company_service)
 
     app.container = {
-        "message_controller": message_controller
+        "message_controller": message_controller,
+        "company_controller": company_controller
     }
 
 

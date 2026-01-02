@@ -1,0 +1,116 @@
+==<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title> Funcionamento </title>
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='register_operation.css') }}">
+    </head>
+
+<div class="container">
+
+    <aside class="sidebar"></aside>
+
+    <main class="content">
+        <header class="header">
+            <h1>Funcionamento</h1>
+            <span class="settings">⚙️</span>
+        </header>
+
+        <section class="form-section">
+            <h2>Informações de Funcionamento</h2>
+
+            <form class="form-area" method="POST">
+
+                <div class="row">
+                    <label>Segunda-Feira:</label>
+                    <input type="time" name="segunda-feira_abre">
+                    <input type="time" name="segunda-feira_fecha">
+                    <label class="switch">
+                        <input type="checkbox" name="segunda-feira_ativo" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="row">
+                    <label>Terça-Feira:</label>
+                    <input type="time" name="terca-feira_abre">
+                    <input type="time" name="terca-feira_fecha">
+                    <label class="switch">
+                        <input type="checkbox" name="terca-feira_ativo" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="row">
+                    <label>Quarta-Feira:</label>
+                    <input type="time" name="quarta-feira_abre">
+                    <input type="time" name="quarta-feira_fecha">
+                    <label class="switch">
+                        <input type="checkbox" name="quarta-feira_ativo" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="row">
+                    <label>Quinta-Feira:</label>
+                    <input type="time" name="quinta-feira_abre">
+                    <input type="time" name="quinta-feira_fecha">
+                    <label class="switch">
+                        <input type="checkbox" name="quinta-feira_ativo" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="row">
+                    <label>Sexta-Feira:</label>
+                    <input type="time" name="sexta-feira_abre">
+                    <input type="time" name="sexta-feira_fecha">
+                    <label class="switch">
+                        <input type="checkbox" name="sexta-feira_ativo" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="row">
+                    <label>Sábado:</label>
+                    <input type="time" name="sabado_abre">
+                    <input type="time" name="sabado_fecha">
+                    <label class="switch">
+                        <input type="checkbox" name="sabado_ativo">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="row">
+                    <label>Domingo:</label>
+                    <input type="time" name="domingo_abre">
+                    <input type="time" name="domingo_fecha">
+                    <label class="switch">
+                        <input type="checkbox" name="domingo_ativo">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="row">
+                    <label>Feriados:</label>
+                    <input type="time" name="feriado_abre">
+                    <input type="time" name="feriado_fecha">
+                    <label class="switch">
+                        <input type="checkbox" name="feriado_ativo">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+
+                <button type="submit" class="btn-salvar">Salvar</button>
+
+            </form>
+        </section>
+    </main>
+
+</div>
+
+</body>
+</html>
