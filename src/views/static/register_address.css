@@ -1,0 +1,94 @@
+/* Reset básico para garantir consistência */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    /* Centraliza o conteúdo na tela */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Alinha mais ao topo, como na imagem */
+    min-height: 100vh;
+    padding-top: 80px; /* Espaço do topo */
+    
+    /* Configuração do Fundo */
+    background-color: #dcdcdc; /* Cor de cimento/parede caso não tenha imagem */
+    
+    /* SE VOCÊ TIVER A IMAGEM, DESCOMENTE A LINHA ABAIXO: */
+    /* background: url('image_a1fbbc.jpg') no-repeat center center / cover; */
+}
+
+.main-container {
+    text-align: center;
+    width: 100%;
+    max-width: 600px;
+}
+
+/* Tipografia */
+.title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 40px;
+}
+
+.subtitle {
+    font-size: 20px;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 10px;
+}
+
+.section-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 20px;
+}
+
+/* Layout do Formulário */
+.api-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px; /* Espaço entre as linhas de input */
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px; /* Espaço entre o texto e o input */
+    width: 100%;
+}
+
+label {
+    font-size: 18px;
+    color: #000;
+    min-width: 120px; /* Garante alinhamento à direita do texto */
+    text-align: right;
+}
+
+input {
+    width: 200px;
+    height: 35px;
+    border-radius: 50px; /* Formato de pílula arredondada */
+    border: none;
+    background-color: #f0f0f0; /* Branco levemente off-white */
+    box-shadow: inset 1px 1px 3px rgba(0,0,0,0.1); /* Sombra interna sutil */
+    padding: 0 15px;
+    outline: none;
+    font-size: 16px;
+    
+    /* Efeito suave de sombra branca externa para destacar do fundo */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Efeito ao clicar no input */
+input:focus {
+    background-color: #fff;
+    box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
+}
