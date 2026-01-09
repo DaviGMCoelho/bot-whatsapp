@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <title>Configuração de Catálogo</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='catalog_products.css') }}">
+    </head>
+
+    <body>
+        <div class="main-container">
+            
+            <header class="top-header">
+                <i class="fa-solid fa-bars menu-icon"></i>
+                <h1>Nome catálogo</h1>
+                <i class="fa-solid fa-gear settings-icon"></i>
+            </header>
+
+            <div class="content-wrapper">
+                <aside class="sidebar-left">
+                    <div class="image-placeholder-container">
+                        <img src="https://placehold.co/400x400/e0e0e0/a0a0a0?text=Imagem" alt="Cenário do Produto" id="main-product-img">
+                    </div>
+
+                    <div class="toggle-wrapper">
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider round"></span>
+                        </label>
+                        <span class="toggle-label">Habilitado</span>
+                    </div>
+                </aside>
+
+                <main class="main-content">
+                    
+                    <div class="actions-bar">
+                        <div class="search-box">
+                            <input type="text" placeholder="Pesquisar..." name="search">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </div>
+
+                        <div class="action-footer">
+                            <button class="btn-add" name="add">Adicionar</button>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <div class="table-header-title">Catálogo de Ofertas</div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Produto</th>
+                                    <th>Imagem</th>
+                                    <th>Descrição</th>
+                                    <th>Preço unitário</th>
+                                    <th>Em oferta</th>
+                                    <th>Preço promoção</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Item 1</td>
+                                    <td><div class="td-img-placeholder"><i class="fa-solid fa-bottle-water"></i></div></td>
+                                    <td>Remédio 10ml</td>
+                                    <td>$10,00</td>
+                                    <td><span class="badge-offer">Sim <i class="fa-solid fa-chevron-down"></i></span></td>
+                                    <td>$10,00</td>
+                                </tr>
+                                <tr>
+                                    <td>Item 2</td>
+                                    <td><div class="td-img-placeholder"><i class="fa-solid fa-bag-shopping"></i></div></td>
+                                    <td>Grão café 500g</td>
+                                    <td>$15,00</td>
+                                    <td><span class="badge-offer">Sim <i class="fa-solid fa-chevron-down"></i></span></td>
+                                    <td>$10,00</td>
+                                </tr>
+                                <tr>
+                                    <td>Item 3</td>
+                                    <td><div class="td-img-placeholder"><i class="fa-solid fa-box"></i></div></td>
+                                    <td>Caixa pequena</td>
+                                    <td>$30,00</td>
+                                    <td><span class="badge-offer">Sim <i class="fa-solid fa-chevron-down"></i></span></td>
+                                    <td>$10,00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </main>
+            </div>
+        </div>
+
+    </body>
+</html>

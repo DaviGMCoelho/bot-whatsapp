@@ -5,6 +5,7 @@ CREATE TABLE personal.Company(
     name varchar(50) not null,
     operation jsonb not null,
     active boolean not null default TRUE
+    cnpj char(14) unique not null;
 );
 
 CREATE TABLE personal.Customer(
@@ -18,17 +19,11 @@ CREATE TABLE personal.Session_Status(
     status varchar(50) not null
 );
 
-CREATE TABLE personal.Offer(
-    id int generated always as identity primary key,
-    offer varchar(30) not null
-);
 
 CREATE TABLE personal.Catalog(
     id int generated always as identity primary key,
     name varchar(30) not null,
-    description text,
     company_id int not null references personal.Company(id) ON DELETE CASCADE,
-    offer_id int not null references personal.Offer(id) ON DELETE NO ACTION,
     active boolean not null default TRUE
 );
 

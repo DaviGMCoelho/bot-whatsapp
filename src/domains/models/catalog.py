@@ -1,7 +1,11 @@
 class Catalog:
-    def __init__(self, name, description, company, offer, active):
+    def __init__(self, name: str, company: str, active: bool = True):
         self.name = name
-        self.description = description
         self.company = company
-        self.offer = offer
         self.active = active
+
+    def _validate(self):
+        for arg, value in self.__dict__.items():
+            if value is None:
+                error = f'{arg} não pode ser None'
+                raise ValueError(error)

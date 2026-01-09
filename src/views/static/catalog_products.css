@@ -1,0 +1,302 @@
+/* style.css */
+
+/* Variáveis de Cores */
+:root {
+    --bg-app: #fdfdfd;      /* Cor de fundo da aplicação */
+    --primary-text: #333;
+    --pink-header: #ec407a; 
+    --purple-toggle: #4a148c; 
+    --green-btn: #80cbc4; 
+    --green-badge: #c8e6c9; 
+    --sidebar-border: #009688; /* Cor da barra lateral esquerda */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-app);
+    color: var(--primary-text);
+    /* Removemos o flex center para permitir o fluxo normal em tela cheia */
+    overflow-x: hidden; /* Evita rolagem horizontal indesejada */
+}
+
+/* Container Principal agora ocupa toda a tela */
+.main-container {
+    width: 100%;
+    min-height: 100vh; /* Força altura mínima de 100% da janela */
+    background-color: var(--bg-app);
+    padding: 30px 50px; /* Espaçamento interno maior para telas grandes */
+    position: relative;
+    
+    /* A barra verde lateral esquerda agora vai de ponta a ponta na altura */
+    border-left: 20px solid var(--sidebar-border); 
+}
+
+/* Cabeçalho */
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee; /* Uma linha sutil para separar o topo */
+}
+
+.top-header h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #000;
+}
+
+.menu-icon, .settings-icon {
+    font-size: 1.8rem; /* Ícones um pouco maiores */
+    color: #333;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.menu-icon:hover, .settings-icon:hover {
+    color: var(--sidebar-border);
+}
+
+/* Layout do Conteúdo */
+.content-wrapper {
+    display: flex;
+    gap: 60px; /* Mais espaço entre a lateral e a tabela */
+    height: 100%;
+}
+
+/* Coluna da Esquerda (Imagem e Toggle) */
+.sidebar-left {
+    width: 300px; /* Largura fixa para a lateral */
+    flex-shrink: 0; /* Impede que a lateral encolha demais */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.image-placeholder-container img {
+    width: 100%;
+    aspect-ratio: 1/1; 
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid #7e57c2;
+    background-color: #eee;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Estilo do Toggle Switch */
+.toggle-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding-left: 5px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 55px;
+    height: 28px;
+}
+
+.switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: var(--purple-toggle);
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.toggle-label {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+/* Coluna da Direita (Conteúdo Principal) */
+.main-content {
+    flex: 1; /* Ocupa todo o espaço restante */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Barra de Ações (Busca e Botão) */
+.actions-bar {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+    gap: 20px;
+}
+
+.search-box {
+    position: relative;
+    flex: 1; /* A busca cresce para ocupar o espaço */
+    max-width: 600px; /* Mas não fica gigante em telas ultrawide */
+}
+
+.search-box input {
+    width: 100%;
+    padding: 12px 45px 12px 20px;
+    border-radius: 25px;
+    border: 1px solid var(--sidebar-border);
+    outline: none;
+    font-size: 1rem;
+    background-color: #f9f9f9;
+}
+
+.search-box i {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--sidebar-border);
+    font-size: 1.1rem;
+}
+
+.btn-add {
+    background-color: var(--green-btn);
+    border: none;
+    padding: 10px 40px;
+    border-radius: 25px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.15);
+    transition: transform 0.2s, filter 0.2s;
+}
+
+.btn-add:hover {
+    filter: brightness(0.95);
+    transform: translateY(-2px);
+}
+
+/* Tabela */
+.table-container {
+    width: 100%;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05); /* Sombra suave apenas na tabela */
+    overflow: hidden; /* Para respeitar o border-radius nos cantos */
+}
+
+.table-header-title {
+    background-color: var(--pink-header);
+    color: white;
+    padding: 15px 20px;
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    text-align: left;
+    padding: 15px 20px;
+    background-color: #fce4ec; 
+    color: #333;
+    font-weight: bold;
+    font-size: 1rem;
+    border-bottom: 2px solid #f8bbd0;
+}
+
+td {
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+    font-size: 1rem;
+    color: #555;
+}
+
+tbody tr:hover {
+    background-color: #f0f0f0; /* Highlight ao passar o mouse */
+}
+
+/* Badge 'Em oferta' */
+.badge-offer {
+    background-color: var(--green-badge);
+    color: #2e7d32;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.td-img-placeholder {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #8d6e63;
+    font-size: 1.4rem;
+    background-color: #efebe9;
+    border-radius: 4px;
+}
+
+/* Responsividade */
+@media (max-width: 900px) {
+    .content-wrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+    .sidebar-left {
+        width: 100%;
+        max-width: 400px;
+        align-items: center;
+    }
+    .toggle-wrapper {
+        justify-content: center;
+    }
+    .main-container {
+        padding: 20px;
+        border-left-width: 10px; /* Barra lateral mais fina em mobile */
+    }
+    .table-container {
+        overflow-x: auto; /* Scroll horizontal na tabela se a tela for muito pequena */
+    }
+}

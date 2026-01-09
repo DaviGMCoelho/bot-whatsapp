@@ -36,14 +36,15 @@ class CompanyController:
         }
         return address
 
-    def _normalize_data(self, request: dict):
+    def _normalize_company(self, request: dict):
         name = 'só para testar'
+        cnpj = '12345678901234'
         work_days = self._organize_operation(request.get('operation'))
         address = self._organize_address(request.get('address'))
-        return name, work_days, address
+        return name, work_days, address, cnpj
 
     def register_company(self, request_raw: dict):
-        name, work_days, address = self._normalize_data(request_raw)
-        company_dto = CreateCompanyDTO(name, work_days, address)
+        name, work_days, address, cnpj = self._normalize_company(request_raw)
+        company_dto = CreateCompanyDTO(name, work_days, address, cnpj)
         register = self.service.register_company(company_dto)
         return register

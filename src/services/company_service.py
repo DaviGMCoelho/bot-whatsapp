@@ -11,7 +11,12 @@ from src.domains.value_objects.business_hours import BusinessHours
 
 
 class CompanyService:
-    def __init__(self, psql_conn: PostgresConn, company_repo: CompanyRepository, address_repo: AddressRepository):
+    def __init__(
+            self,
+            psql_conn: PostgresConn,
+            company_repo: CompanyRepository,
+            address_repo: AddressRepository
+    ):
         self.company_repo_psql = company_repo
         self.address_repo_psql = address_repo
         self.psql_conn = psql_conn
@@ -36,12 +41,13 @@ class CompanyService:
             days.append(daily_hour)
         return Operation(days)
 
-    def _convert_to_model(self, create_company_dto: CreateCompanyDTO):
+    def _convert_to_company_model(self, create_company_dto: CreateCompanyDTO):
         company_name = create_company_dto.name
+        company_cnpj = create_company_dto.cnpj
         operation = self._create_operation(create_company_dto.operation)
         address_dto = create_company_dto.address
 
-        company = Company(company_name, operation)
+        company = Company(company_name, operation, company_cnpj)
         address = Address(
             state = address_dto.get('estado'),
             city = address_dto.get('cidade'),
@@ -56,7 +62,7 @@ class CompanyService:
 
     def register_company(self, create_company_dto: CreateCompanyDTO):
         try:
-            company, address = self._convert_to_model(create_company_dto)
+            company, address = self._convert_to_company_model(create_company_dto)
             with self.psql_conn.transaction() as conn:
                 company_id = self.company_repo_psql.company_data_register(conn, company)
                 address.company_id = company_id
