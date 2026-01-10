@@ -18,9 +18,9 @@ class CreateItemDTO:
         self._validate_catalog(self.catalog)
 
     def _validate_price(self, price: str):
-         if not price.replace(".", "", 1).isdigit():
+        if not price.replace(".", "", 1).isdigit():
             raise ValueError("Preço inválido")
-         if len(price.split(".")[1]) > 2 if "." in price else False:
+        if len(price.split(".")[1]) > 2 if "." in price else False:
             raise ValueError("Preço deve ter no máximo 2 casas decimais")
 
     def _validate_active(self, active: str):

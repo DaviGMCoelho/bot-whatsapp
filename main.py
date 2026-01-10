@@ -25,6 +25,7 @@ from src.services.item_service import ItemService
 from src.controllers.message_controller import MessageController
 from src.controllers.company_controller import CompanyController
 from src.controllers.catalog_controller import CatalogController
+from src.controllers.item_controller import ItemController
 
 from src.routes.website_routes import website_bp
 from src.routes.webhook_routes import webhook_bp
@@ -70,11 +71,13 @@ def init_dependencies(app: Flask):
     message_controller = MessageController(message_service)
     company_controller = CompanyController(company_service)
     catalog_controller = CatalogController(catalog_service)
+    item_controller = ItemController(item_service)
 
     app.container = {
         "message_controller": message_controller,
         "company_controller": company_controller,
-        "catalog_controller": catalog_controller
+        "catalog_controller": catalog_controller,
+        "item_controller": item_controller
     }
 
 
