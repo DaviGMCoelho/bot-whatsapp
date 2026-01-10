@@ -37,11 +37,11 @@ class CompanyController:
         return address
 
     def _normalize_company(self, request: dict):
-        name = 'só para testar'
-        cnpj = '12345678901234'
+        name = self._organize_operation(request.get('name'))
+        cnpj = self._organize_operation(request.get('cnpj'))
         work_days = self._organize_operation(request.get('operation'))
         address = self._organize_address(request.get('address'))
-        return name, work_days, address, cnpj
+        return name, cnpj, work_days, address
 
     def register_company(self, request_raw: dict):
         name, work_days, address, cnpj = self._normalize_company(request_raw)

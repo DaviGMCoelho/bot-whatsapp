@@ -13,6 +13,7 @@ from src.repositories.postgres.message.message_repository import MessageReposito
 from src.repositories.postgres.company.company_repository import CompanyRepository
 from src.repositories.postgres.address.address_repository import AddressRepository
 from src.repositories.postgres.catalog.catalog_repository import CatalogRepository
+from src.repositories.postgres.item.item_repository import ItemRepository
 
 from src.services.evolution_service import EvolutionService
 from src.services.gemini_service import GeminiService
@@ -53,6 +54,9 @@ def init_dependencies(app: Flask):
     psql_company_repo = CompanyRepository()
     psql_address_repo = AddressRepository()
     psql_catalog_repo = CatalogRepository()
+    psql_item_repo = ItemRepository()
+
+    psql_item_repo.insert()
 
     if app.config["POSTGRES"]["PSQL_MIGRATIONS"] is True:
         init_database(conn_postgres)
@@ -108,7 +112,7 @@ def create_app():
     init_dependencies(instance)
 
     instance.register_blueprint(website_bp)
-    #instance.register_blueprint(webhook_bp)
+    instance.register_blueprint(webhook_bp)
     instance.register_blueprint(product_bp)
 
     return instance

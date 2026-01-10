@@ -4,6 +4,8 @@ class Catalog:
         self.company = company
         self.active = active
 
+        self._validate()
+
     def _validate(self):
         for arg, value in self.__dict__.items():
             if value is None:

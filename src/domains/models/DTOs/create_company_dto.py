@@ -1,5 +1,5 @@
 class CreateCompanyDTO:
-    def __init__(self, name: str, operation: dict, address: dict | None, cnpj: str):
+    def __init__(self, name: str, cnpj: str, operation: dict, address: dict | None):
         if not name:
             raise ValueError('Nome é obrigatório')
         if operation is not None and not isinstance(operation, dict):
@@ -8,6 +8,7 @@ class CreateCompanyDTO:
             raise ValueError('Address deve ser um dicionário')
 
         self.name = name
+        self.cnpj = cnpj
         self.operation = operation or {}
         self.address = address or {}
-        self.cnpj = cnpj
+
