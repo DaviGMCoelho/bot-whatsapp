@@ -20,6 +20,7 @@ from src.services.gemini_service import GeminiService
 from src.services.message_service import MessageService
 from src.services.company_service import CompanyService
 from src.services.catalog_service import CatalogService
+from src.services.item_service import ItemService
 
 from src.controllers.message_controller import MessageController
 from src.controllers.company_controller import CompanyController
@@ -56,8 +57,6 @@ def init_dependencies(app: Flask):
     psql_catalog_repo = CatalogRepository()
     psql_item_repo = ItemRepository()
 
-    psql_item_repo.insert()
-
     if app.config["POSTGRES"]["PSQL_MIGRATIONS"] is True:
         init_database(conn_postgres)
 
@@ -66,6 +65,7 @@ def init_dependencies(app: Flask):
     message_service = MessageService(conn_postgres, evolution_service, gemini_service, psql_message_repo)
     company_service = CompanyService(conn_postgres, psql_company_repo, psql_address_repo)
     catalog_service = CatalogService(conn_postgres, psql_catalog_repo, psql_company_repo)
+    item_service = ItemService(conn_postgres, psql_item_repo)
 
     message_controller = MessageController(message_service)
     company_controller = CompanyController(company_service)

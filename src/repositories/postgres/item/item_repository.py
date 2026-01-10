@@ -1,10 +1,10 @@
 from psycopg2.extensions import connection
 from src.repositories.postgres.base_repository import PostgresBaseRepository
 
-from src.domains.models.items import Items
+from src.domains.models.item import Item
 
 class ItemRepository(PostgresBaseRepository):
-    def insert(self, conn: connection, item: Items):
+    def insert(self, conn: connection, item: Item):
         sql_query = self._load_query('item/queries/register_item.sql')
 
         with conn.cursor() as cursor:

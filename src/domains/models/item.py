@@ -1,8 +1,10 @@
-class Items:
+from decimal import Decimal
+
+class Item:
     def __init__(self,
                  name: str,
                  description: str,
-                 price: float,
+                 price: Decimal,
                  catalog: int,
                  active: bool
                  ):
