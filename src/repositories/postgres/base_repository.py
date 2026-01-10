@@ -8,3 +8,20 @@ class PostgresBaseRepository(ABC):
     def _load_query(self, filename: str):
         with open(self.queries_path / filename, 'r', encoding='utf-8') as query:
             return query.read()
+        
+    def _build_update_query(self, sql_query: str, allowed_fields: set, item_id: int, data: dict):
+        set_clauses = []
+        params = {"id": item_id}
+
+        for field, value in data.items():
+            if field not in allowed_fields:
+                continue
+            set_clauses.append(f'{field} = %({field})s')
+            params[field] = value
+        if not set_clauses:
+            raise ValueError("Nenhum campo válido para atualização")
+
+        set_clause = ', '.join(set_clauses)
+        new_query = sql_query.replace("{{set_clause}}", set_clause)
+
+        return new_query, params
