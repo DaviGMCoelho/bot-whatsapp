@@ -10,9 +10,10 @@ class ItemRepository(PostgresBaseRepository):
 
     def insert(self, conn: connection, item: Item):
         sql_query = self._load_query('item/queries/register_item.sql')
-
+        print('passou pelo insert')
         with conn.cursor() as cursor:
             cursor.execute(sql_query, {
+                'code': item.code,
                 'name': item.name,
                 'description': item.description,
                 'price': item.price,
@@ -20,9 +21,9 @@ class ItemRepository(PostgresBaseRepository):
                 'active': item.active
             })
 
-    def update(self, conn: connection, item_id: int, data: dict):
+    def update(self, conn: connection, item_code: str, data: dict):
         query_raw = self._load_query('item/queries/update_item.sql')
-        sql_query, params = self._build_update_query(query_raw, self.ALLOWED_FIELDS, item_id, data)
-
+        sql_query, params = self._build_update_query(query_raw, self.ALLOWED_FIELDS, item_code, data)
+        print('passou pelo update')
         with conn.cursor() as cursor:
             cursor.execute(sql_query, params)

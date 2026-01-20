@@ -1,3 +1,3 @@
 select * 
-    from personal."company"
+    from personal."Company"
 	where cnpj = %(cnpj)s;

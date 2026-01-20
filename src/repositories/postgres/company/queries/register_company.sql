@@ -1,5 +1,5 @@
 insert into 
-	personal.company
+	personal.Company
 	(
 		name,
 		operation,

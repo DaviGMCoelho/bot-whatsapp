@@ -37,8 +37,8 @@ class CompanyController:
         return address
 
     def _normalize_company(self, request: dict):
-        name = self._organize_operation(request.get('name'))
-        cnpj = self._organize_operation(request.get('cnpj'))
+        name = self._organize_operation(request.get('name')) or 'EmpresaTeste'
+        cnpj = self._organize_operation(request.get('cnpj')) or 'CNPJTeste'
         work_days = self._organize_operation(request.get('operation'))
         address = self._organize_address(request.get('address'))
         return name, cnpj, work_days, address

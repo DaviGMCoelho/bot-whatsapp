@@ -2,12 +2,14 @@ from decimal import Decimal
 
 class Item:
     def __init__(self,
-                 name: str,
-                 description: str,
-                 price: Decimal,
-                 catalog: int,
-                 active: bool
+                 code: str = None,
+                 name: str = None,
+                 description: str = None,
+                 price: Decimal = None,
+                 catalog: int = None,
+                 active: bool = None
                  ):
+        self.code = code
         self.name = name
         self.description = description
         self.price = price
@@ -24,5 +26,5 @@ class Item:
         if not self._price_is_more_than_zero(self.price):
             raise ValueError('Preço precisa ser maior que zero!')
 
-    def _price_is_more_than_zero(self, price: float):
+    def _price_is_more_than_zero(self, price: Decimal):
         return price > 0.0

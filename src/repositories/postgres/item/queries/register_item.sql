@@ -1,6 +1,7 @@
 insert into 
-	personal."items"
+	personal."Item"
 	(
+		code,
 		name,
 		description,
 		price,
@@ -9,6 +10,7 @@ insert into
 	)
 values
 	(
+		%(code)s,
 		%(name)s,
 		%(description)s,
 		%(price)s,

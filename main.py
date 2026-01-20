@@ -79,8 +79,7 @@ def init_dependencies(app: Flask):
         "catalog_controller": catalog_controller,
         "item_controller": item_controller
     }
-
-
+    
 def create_app():
     load_dotenv()
 

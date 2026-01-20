@@ -1,5 +1,4 @@
-insert into personal."catalog"
-(
+insert into personal."Catalog"
 	name,
 	company_id,
 	active

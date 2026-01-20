@@ -1,5 +1,5 @@
 insert into
-	personal.address 
+	personal."Address"
 	(
 		state, 
 		city,

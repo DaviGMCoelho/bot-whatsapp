@@ -1,3 +1,3 @@
-update personal."items"
+update personal."Item"
     set {{set_clause}}
-where id = %(id)s
+where code = %(code)s

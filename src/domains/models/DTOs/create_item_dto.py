@@ -1,5 +1,6 @@
 class CreateItemDTO:
-    def __init__(self, name: str, description: str, price: str, catalog: str, active: str):
+    def __init__(self, code: str, name: str, description: str, price: str, catalog: str, active: str):
+        self.code = code
         self.name = name
         self.description = description
         self.price = price
