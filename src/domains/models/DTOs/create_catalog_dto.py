@@ -1,12 +1,22 @@
 class CreateCatalogDTO:
-    def __init__(self, name: str, company: str, active: bool):
-        if not name:
-            raise ValueError('Nome é obrigatório')
-        if company is not None and not isinstance(company, str):
-            raise ValueError('Company deve ser um número')
-        if active is not None and not isinstance(active, bool):
-            raise ValueError('Active deve ser um booleano')
-
+    def __init__(self, code: str, name: str, company: str, active: str):
+        self.code = code
         self.name = name
         self.company = company
         self.active = active
+
+    def _validate(self):
+        for arg, value in self.__dict__.items():
+            if value is None or (isinstance(value, str) and not value.strip()):
+                error = f'{arg} não pode ser vazia'
+                raise ValueError(error)
+        self._validate_company(self.company)
+        self._validate_active(self.active)
+
+    def _validate_active(self, active: str):
+        if active.lower() not in ("true", "false"):
+            raise ValueError("Active inválido, apenas 'true' ou 'false'")
+
+    def _validate_company(self, company_id: str):
+        if not company_id.isdigit():
+            raise ValueError('Empresa inválida, deve ser um inteiro')

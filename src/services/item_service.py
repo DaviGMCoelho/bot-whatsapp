@@ -50,12 +50,12 @@ class ItemService:
             item = update_item_dto.to_dict()
             with self.psql_conn.connect() as conn:
                 self.item_repo_psql.update(conn, update_item_dto.code, item)
-            print({
+            return {
                 'status': 'success',
                 'message': 'Item atualizado corretamente'
-            })
+            }
         except Exception as e:
-            print({
+            return {
                 'status': 'error',
                 'message': f'{__name__} - {str(e)}'
-            })
+            }

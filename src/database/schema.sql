@@ -21,18 +21,19 @@ CREATE TABLE personal."Session_Status"(
 
 CREATE TABLE personal."Catalog"(
     id int generated always as identity primary key,
+    code char(7) not null unique,
     name varchar(30) not null,
-    company_id int not null references personal.Company(id) ON DELETE CASCADE,
+    company_id int not null references personal."Company"(id) ON DELETE CASCADE,
     active boolean not null default TRUE
 );
 
 CREATE TABLE personal."Item"(
     id int generated always as identity primary key,
-    code char(7) not null,
+    code char(7) not null unique,
     name varchar(30) not null,
     description TEXT not null,
     price numeric(10,2) not null,
-    catalog_id int not null references personal.Catalog(id) ON DELETE CASCADE,
+    catalog_id int not null references personal."Catalog"(id) ON DELETE CASCADE,
     active boolean not null default TRUE
 );
 
@@ -46,27 +47,28 @@ CREATE TABLE personal."Address"(
     postal_code varchar(20) not null,
     complement varchar(255),
     label varchar(100),
-    company_id int not null references personal.Company(id) ON DELETE CASCADE
+    company_id int not null references personal."Company"(id) ON DELETE CASCADE
 );
 
 CREATE TABLE personal."Instance_Hub"(
     id int generated always as identity primary key,
     name varchar(255) not null,
-    company_id int not null references personal.Company(id) ON DELETE CASCADE,
+    company_id int not null references personal."Company"(id) ON DELETE CASCADE,
     instance_id text not null
 );
 
 CREATE TABLE personal."Credentials"(
     id int generated always as identity primary key,
-    company_id int not null references personal.Company(id) ON DELETE CASCADE,
+    company_id int not null references personal."Company"(id) ON DELETE CASCADE,
     credential TEXT not null
 );
 
 CREATE TABLE personal."Session"(
     id int generated always as identity primary key,
-    status_id int not null references personal.Session_Status(id) ON DELETE RESTRICT,
-    customer_id int not null references personal.Customer(id) ON DELETE CASCADE,
-    company_id int not null references personal.Company(id) ON DELETE CASCADE,
+    code char(15) not null unique,
+    status_id int not null references personal."Session_Status"(id) ON DELETE RESTRICT,
+    customer_id int not null references personal."Customer"(id) ON DELETE CASCADE,
+    company_id int not null references personal."Company"(id) ON DELETE CASCADE,
     started_at TIMESTAMPTZ not null default CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ,
     closed_at TIMESTAMPTZ,

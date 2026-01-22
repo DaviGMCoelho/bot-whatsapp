@@ -1,5 +1,6 @@
 class Catalog:
-    def __init__(self, name: str, company: str, active: bool = True):
+    def __init__(self, code: str, name: str, company: str, active: bool = True):
+        self.code = code
         self.name = name
         self.company = company
         self.active = active
