@@ -20,7 +20,7 @@ class GeminiService:
 
     def _create_embeddings(self):
         return GoogleGenerativeAIEmbeddings(
-            model="models/text-embedding-004",
+            model="embedding-001",
             google_api_key = os.getenv("GOOGLE_API_KEY")
         )
 
@@ -71,3 +71,4 @@ class GeminiService:
 
         response = self.client.generate_message(prompt)
         return response
+

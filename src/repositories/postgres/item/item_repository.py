@@ -23,7 +23,7 @@ class ItemRepository(PostgresBaseRepository):
 
     def update(self, conn: connection, item_code: str, data: dict):
         query_raw = self._load_query('item/queries/update_item.sql')
-        sql_query, params = self._build_update_query(query_raw, self.ALLOWED_FIELDS, item_code, data)
-        print('passou pelo update')
+        sql_query, params = self._build_update_query(query_raw, self.ALLOWED_FIELDS, 'code', item_code, data)
+
         with conn.cursor() as cursor:
             cursor.execute(sql_query, params)

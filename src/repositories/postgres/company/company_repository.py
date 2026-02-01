@@ -3,13 +3,31 @@ from src.repositories.postgres.base_repository import PostgresBaseRepository
 from src.domains.models.company import Company
 
 class CompanyRepository (PostgresBaseRepository):
-    def company_data_register(self, conn: connection, company: Company):
+    def __init__(self):
+        super().__init__()
+        self.ALLOWED_FIELDS = {'name', 'active', 'operation'}
+
+    def insert(self, conn: connection, company: Company):
         sql_query = self._load_query('company/queries/register_company.sql')
         with conn.cursor() as cursor:
             cursor.execute(sql_query, {
                 'name': company.name,
                 'operation': company.operation.to_json()
                 })
+            return cursor.fetchone()[0]
+
+    def update(self, conn: connection, cnpj: str, data: dict):
+        query_raw = self._load_query('company/queries/update_company.sql')
+        sql_query, params = self._build_update_query(query_raw, self.ALLOWED_FIELDS, 'cnpj', cnpj, data)
+        with conn.cursor() as cursor:
+            cursor.execute(sql_query, params)
+
+    def get_company_operation(self, conn: connection, cnpj: str):
+        sql_query = self._load_query('company/queries/get_company_operation.sql')
+        with conn.cursor() as cursor:
+            cursor.execute(sql_query, {
+                'cnpj': cnpj
+            })
             return cursor.fetchone()[0]
 
     def get_company_by_cnpj(self, conn: connection, company_cnpj: str):
