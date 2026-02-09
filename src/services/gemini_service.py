@@ -1,13 +1,14 @@
 import os
 from dotenv import load_dotenv
 
+from src.services.base_service import BaseService
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_community.vectorstores import FAISS
 from langchain_community.document_loaders import CSVLoader
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
 from src.clients.gemini_client import GeminiClient
-class GeminiService:
+class GeminiService(BaseService):
     load_dotenv()
 
     def __init__(self, client: GeminiClient, document: str):

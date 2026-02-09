@@ -1,3 +1,4 @@
+from src.services.base_service import BaseService
 from src.repositories.postgres.catalog.catalog_repository import CatalogRepository
 from src.repositories.postgres.company.company_repository import CompanyRepository
 from src.database.connection_pg import PostgresConn
@@ -5,7 +6,7 @@ from src.domains.models.DTOs.create_catalog_dto import CreateCatalogDTO
 from src.domains.models.DTOs.update_catalog_dto import UpdateCatalogDTO
 from src.domains.models.catalog import Catalog
 
-class CatalogService:
+class CatalogService(BaseService):
     def __init__(self, psql_conn: PostgresConn, catalog_repo: CatalogRepository, company_repo: CompanyRepository):
         self.catalog_repo_psql = catalog_repo
         self.company_repo_psql = company_repo

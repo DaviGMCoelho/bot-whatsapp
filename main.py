@@ -4,25 +4,25 @@ from dotenv import load_dotenv
 
 from flask import Flask
 
-from src.clients.evolution_client import EvolutionClient
+#from src.clients.evolution_client import EvolutionClient
 #from src.clients.gemini_client import GeminiClient
 
 from src.database.connection_pg import PostgresConn
 from src.database.migrations import init_database
-from src.repositories.postgres.message.message_repository import MessageRepository
+#from src.repositories.postgres.message.message_repository import MessageRepository
 from src.repositories.postgres.company.company_repository import CompanyRepository
 from src.repositories.postgres.address.address_repository import AddressRepository
 from src.repositories.postgres.catalog.catalog_repository import CatalogRepository
 from src.repositories.postgres.item.item_repository import ItemRepository
 
-from src.services.evolution_service import EvolutionService
+#from src.services.evolution_service import EvolutionService
 #from src.services.gemini_service import GeminiService
-from src.services.message_service import MessageService
+#from src.services.message_service import MessageService
 from src.services.company_service import CompanyService
 from src.services.catalog_service import CatalogService
 from src.services.item_service import ItemService
 
-from src.controllers.message_controller import MessageController
+#from src.controllers.message_controller import MessageController
 from src.controllers.company_controller import CompanyController
 from src.controllers.catalog_controller import CatalogController
 from src.controllers.item_controller import ItemController

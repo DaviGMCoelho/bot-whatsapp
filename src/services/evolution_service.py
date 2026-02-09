@@ -1,6 +1,7 @@
 from src.clients.evolution_client import EvolutionClient
+from src.services.base_service import BaseService
 
-class EvolutionService:
+class EvolutionService(BaseService):
     def __init__(self, client: EvolutionClient):
         self.client = client
 

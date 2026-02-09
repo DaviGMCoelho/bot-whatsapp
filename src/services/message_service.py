@@ -1,10 +1,12 @@
 import os
-from dotenv import load_dotenv
+
 from src.database.connection_pg import PostgresConn
+from src.services.base_service import BaseService
 from src.services.evolution_service import EvolutionService
 from src.services.gemini_service import GeminiService
 from src.repositories.postgres.message.message_repository import MessageRepository
-class MessageService:
+
+class MessageService(BaseService):
     def __init__(self,
                  psql_conn: PostgresConn,
                  evolution_service: EvolutionService,

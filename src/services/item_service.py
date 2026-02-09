@@ -1,12 +1,13 @@
 from decimal import Decimal
 
+from src.services.base_service import BaseService
 from src.repositories.postgres.item.item_repository import ItemRepository
 from src.database.connection_pg import PostgresConn
 from src.domains.models.DTOs.create_item_dto import CreateItemDTO
 from src.domains.models.DTOs.update_item_dto import UpdateItemDTO
 from src.domains.models.item import Item
 
-class ItemService:
+class ItemService(BaseService):
     def __init__ (self, psql_conn: PostgresConn, item_repo: ItemRepository):
         self.item_repo_psql = item_repo
         self.psql_conn = psql_conn

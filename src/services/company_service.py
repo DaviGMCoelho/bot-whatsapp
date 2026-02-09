@@ -1,6 +1,7 @@
 from datetime import datetime
 import json
 
+from src.services.base_service import BaseService
 from src.repositories.postgres.company.company_repository import CompanyRepository
 from src.repositories.postgres.address.address_repository import AddressRepository
 from src.database.connection_pg import PostgresConn
@@ -12,7 +13,7 @@ from src.domains.value_objects.operation import Operation
 from src.domains.value_objects.business_hours import BusinessHours
 
 
-class CompanyService:
+class CompanyService(BaseService):
     def __init__(
             self,
             psql_conn: PostgresConn,
@@ -77,7 +78,7 @@ class CompanyService:
                     current_days[day_name]['active'] = new_day['active']
             else:
                 current_days[day_name] = new_day
-    
+
         return {
             'operation': list(current_days.values())
         }
