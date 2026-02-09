@@ -61,7 +61,7 @@ class CompanyService:
         )
         return company, address
 
-    def _merge_operation(self, current_operation_json: str, new_operation: dict): 
+    def _merge_operation(self, current_operation_json: str, new_operation: dict):
         current_operation = json.loads(current_operation_json) if isinstance(current_operation_json, str) else current_operation_json
         current_days= {day['day']: day for day in current_operation.get('weekly_hours', [])}
         new_days_list = new_operation.get('operation', [])
@@ -135,3 +135,11 @@ class CompanyService:
             data = {'operation': operation.to_json()}
 
             self.company_repo_psql.update(conn, update_company_dto.cnpj, data)
+
+    def update_company_address(self, update_company_dto: UpdateCompanyDTO):
+        if not update_company_dto.address:
+            raise ValueError("Address é obrigatório para a atualização")
+
+        with self.psql_conn.connect() as conn:
+            company_id = self.company_repo_psql.get_company_by_cnpj(conn, update_company_dto.cnpj)[0]
+            self.address_repo_psql.update(conn, company_id, update_company_dto.address['code'], update_company_dto.address)

@@ -21,7 +21,8 @@ class CatalogRepository(PostgresBaseRepository):
 
     def update(self, conn: connection, catalog_code: str, data: dict):
         query_raw = self._load_query('catalog/queries/update_catalog.sql')
-        sql_query, params = self._build_update_query(query_raw, self.ALLOWED_FIELDS, 'code', catalog_code, data)
+        sql_query, params = self._build_update_query(query_raw, self.ALLOWED_FIELDS, data)
+        params['code']: catalog_code
 
         with conn.cursor() as cursor:
             cursor.execute(sql_query, params)

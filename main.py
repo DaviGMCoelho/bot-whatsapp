@@ -31,15 +31,16 @@ from src.routes.website_routes import website_bp
 from src.routes.webhook_routes import webhook_bp
 from src.routes.website.product_routes import product_bp
 
+
 def init_dependencies(app: Flask):
-    evolution_cfg = app.config["EVOLUTION"]
-    gemini_cfg = app.config["GEMINI"]
+    #evolution_cfg = app.config["EVOLUTION"]
+    #gemini_cfg = app.config["GEMINI"]
     postgres_cfg = app.config["POSTGRES"]
 
-    evolution_client = EvolutionClient(
-        evolution_cfg["EVOLUTION_API"],
-        evolution_cfg["EVOLUTION_HOST"]
-        )
+    #evolution_client = EvolutionClient(
+    #    evolution_cfg["EVOLUTION_API"],
+    #    evolution_cfg["EVOLUTION_HOST"]
+    #    )
 
     #gemini_client = GeminiClient(
     #    gemini_cfg["GOOGLE_API"]
@@ -52,7 +53,7 @@ def init_dependencies(app: Flask):
         postgres_cfg["PSQL_HOST"],
         postgres_cfg["PSQL_PORT"]
         )
-    psql_message_repo = MessageRepository()
+    #psql_message_repo = MessageRepository()
     psql_company_repo = CompanyRepository()
     psql_address_repo = AddressRepository()
     psql_catalog_repo = CatalogRepository()
@@ -61,7 +62,7 @@ def init_dependencies(app: Flask):
     if app.config["POSTGRES"]["PSQL_MIGRATIONS"] is True:
         init_database(conn_postgres)
 
-    evolution_service = EvolutionService(evolution_client)
+    #evolution_service = EvolutionService(evolution_client)
     #gemini_service = GeminiService(gemini_client, gemini_cfg["CSV_PATH"])
     #message_service = MessageService(conn_postgres, evolution_service, gemini_service, psql_message_repo)
     company_service = CompanyService(conn_postgres, psql_company_repo, psql_address_repo)

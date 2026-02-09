@@ -9,9 +9,9 @@ class PostgresBaseRepository(ABC):
         with open(self.queries_path / filename, 'r', encoding='utf-8') as query:
             return query.read()
         
-    def _build_update_query(self, sql_query: str, allowed_fields: set, param_code: str, code: str, data: dict):
+    def _build_update_query(self, sql_query: str, allowed_fields: set, data: dict):
         set_clauses = []
-        params = {f"{param_code}": code}
+        params = {}
 
         for field, value in data.items():
             if field not in allowed_fields:

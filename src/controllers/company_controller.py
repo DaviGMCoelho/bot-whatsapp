@@ -26,16 +26,23 @@ class CompanyController:
         return {'operation': list(days.values())}
 
     def _organize_address(self, address_request: dict):
-        address =  {
-            'estado': address_request.get('estado'),
-            'cidade': address_request.get('cidade'),
-            'bairro': address_request.get('bairro'),
-            'rua': address_request.get('rua'),
-            'numero': address_request.get('numero'),
-            'cep': address_request.get('cep'),
-            'complemento': address_request.get('complemento')
+        treated_address = {}
+        raw_address =  {
+            'code': address_request.get('code'),
+            'state': address_request.get('estado'),
+            'city': address_request.get('cidade'),
+            'neighborhood': address_request.get('bairro'),
+            'street': address_request.get('rua'),
+            'number': address_request.get('numero'),
+            'postal_code': address_request.get('cep'),
+            'complement': address_request.get('complemento')
         }
-        return address
+
+        for key, value in raw_address.items():
+            if value is not None:
+                treated_address[key] = value
+
+        return treated_address
 
     def _normalize_company(self, request: dict):
         name = request.get('name')
@@ -63,4 +70,11 @@ class CompanyController:
         operation = self._organize_operation(request.get('operation'))
         update_company_dto = UpdateCompanyDTO(operation=operation, cnpj=cnpj)
         update = self.service.update_company_operation(update_company_dto)
+        return update
+
+    def update_company_address(self, request: dict):
+        cnpj = request.get('cnpj')
+        address = self._organize_address(request.get('address'))
+        update_company_dto = UpdateCompanyDTO(cnpj=cnpj, address=address)
+        update = self.service.update_company_address(update_company_dto)
         return update

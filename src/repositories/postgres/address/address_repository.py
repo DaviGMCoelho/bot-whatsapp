@@ -3,6 +3,12 @@ from src.repositories.postgres.base_repository import PostgresBaseRepository
 from src.domains.models.address import Address
 
 class AddressRepository(PostgresBaseRepository):
+    def __init__(self):
+        super().__init__()
+        self.ALLOWED_FIELDS = {'state', 'city', 'neighborhood', 'street', 'number',
+                               'postal_code', 'complement', 'label'}
+
+
     def insert(self, conn: connection, address: Address):
             sql_query = self._load_query('address/queries/register_address.sql')
 
@@ -18,3 +24,17 @@ class AddressRepository(PostgresBaseRepository):
                     'label': address.label,
                     'company_id': address.company_id
                 })
+
+
+    def update(self, conn: connection, company_id: int, code: str, data: dict):
+        update_query_raw = self._load_query('address/queries/update_address.sql')
+        update_query, params = self._build_update_query(
+            update_query_raw, 
+            self.ALLOWED_FIELDS,
+            data = data
+        )
+        params['code'] = code
+        params['company_id'] = company_id
+
+        with conn.cursor() as cursor:
+            cursor.execute(update_query, params)
