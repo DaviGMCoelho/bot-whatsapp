@@ -28,9 +28,19 @@ class CatalogController:
     def update_catalog(self, request: dict):
         catalog = self._organize_data(request)
         update_catalog_dto = UpdateCatalogDTO(
+            company = catalog['cnpj'],
             code = catalog['code'],
             name = catalog['name'],
             active = catalog['active']
         )
         update = self.service.update_catalog(update_catalog_dto)
         return update
+    
+    def change_active(self, request: dict):
+        update_catalog_dto = UpdateCatalogDTO(
+            code = request['code'],
+            company = request['company'],
+            active = request['active']
+        )
+        change = self.service.change_catalog_state(update_catalog_dto)
+        return change

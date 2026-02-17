@@ -20,9 +20,9 @@ class CatalogService(BaseService):
                 create_catalog_dto.company,
                 create_catalog_dto.active
                 )
-                
+
             with self.psql_conn.connect() as conn:
-                catalog.company = self.company_repo_psql.get_company_by_cnpj(conn, create_catalog_dto.company)
+                catalog.company = self.company_repo_psql.get_company_by_cnpj(conn, create_catalog_dto.company)[0]
                 self.catalog_repo_psql.insert(conn, catalog)
 
             return {
@@ -51,3 +51,10 @@ class CatalogService(BaseService):
                 'status': 'error',
                 'message': f'{__name__} - {str(e)}'
             }
+
+    def change_catalog_state(self, update_catalog_dto: UpdateCatalogDTO):
+        is_active = self._translate_state(update_catalog_dto.active)
+
+        with self.psql_conn.connect() as conn:
+            company_id = self.company_repo_psql.get_company_by_cnpj(conn, update_catalog_dto.company)[0]
+            self.catalog_repo_psql.change_state(conn, company_id, update_catalog_dto.code, is_active)

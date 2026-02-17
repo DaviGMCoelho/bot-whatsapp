@@ -19,6 +19,7 @@ class CatalogRepository(PostgresBaseRepository):
                 'active': catalog.active
             })
 
+
     def update(self, conn: connection, catalog_code: str, data: dict):
         query_raw = self._load_query('catalog/queries/update_catalog.sql')
         sql_query, params = self._build_update_query(query_raw, self.ALLOWED_FIELDS, data)
@@ -26,3 +27,14 @@ class CatalogRepository(PostgresBaseRepository):
 
         with conn.cursor() as cursor:
             cursor.execute(sql_query, params)
+
+
+    def change_state(self, conn: connection, company_id: int, catalog_code: str, active: bool):
+        sql_query = self._load_query('catalog/queries/change_catalog_state.sql')
+
+        with conn.cursor() as cursor:
+            cursor.execute(sql_query, {
+                'active': active,
+                'code': catalog_code,
+                'company_id': company_id
+            })

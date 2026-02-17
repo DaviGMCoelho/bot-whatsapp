@@ -74,6 +74,15 @@ def init_dependencies(app: Flask):
     catalog_controller = CatalogController(catalog_service)
     item_controller = ItemController(item_service)
 
+
+    from src.domains.models.DTOs.update_item_dto import UpdateItemDTO
+    update = {
+        'code': '1346257',
+        'company':'12345678901234',
+        'active':'off'
+    }
+    catalog_controller.change_active(update)
+
     app.container = {
         #"message_controller": message_controller,
         "company_controller": company_controller,
