@@ -29,6 +29,7 @@ CREATE TABLE personal."Catalog"(
 
 CREATE TABLE personal."Item"(
     id int generated always as identity primary key,
+    company_id int not null references personal."Company"(id) ON DELETE CASCADE,
     code char(7) not null unique,
     name varchar(30) not null,
     description TEXT not null,

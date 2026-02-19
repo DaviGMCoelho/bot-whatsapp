@@ -31,11 +31,13 @@ class ItemRepository(PostgresBaseRepository):
             cursor.execute(sql_query, params)
 
 
-    def change_state(self, conn: connection, item_code: str, active: bool):
+    def change_state(self, conn: connection, catalog_id: int, company_id: int, item_code: str, active: bool):
         sql_query = self._load_query('item/queries/change_item_state.sql')
 
         with conn.cursor() as cursor:
             cursor.execute(sql_query, {
                 'active': active,
-                'code': item_code
+                'code': item_code,
+                'company_id': company_id,
+                'catalog_id': catalog_id
             })

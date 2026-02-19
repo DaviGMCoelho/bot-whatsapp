@@ -67,21 +67,21 @@ def init_dependencies(app: Flask):
     #message_service = MessageService(conn_postgres, evolution_service, gemini_service, psql_message_repo)
     company_service = CompanyService(conn_postgres, psql_company_repo, psql_address_repo)
     catalog_service = CatalogService(conn_postgres, psql_catalog_repo, psql_company_repo)
-    item_service = ItemService(conn_postgres, psql_item_repo)
+    item_service = ItemService(conn_postgres, psql_company_repo, psql_catalog_repo, psql_item_repo)
 
     #message_controller = MessageController(message_service)
     company_controller = CompanyController(company_service)
     catalog_controller = CatalogController(catalog_service)
     item_controller = ItemController(item_service)
 
-
-    from src.domains.models.DTOs.update_item_dto import UpdateItemDTO
-    update = {
-        'code': '1346257',
-        'company':'12345678901234',
-        'active':'off'
-    }
-    catalog_controller.change_active(update)
+    item_controller.change_item_state(
+        {
+            'company': '12345678901234',
+            'code': '1234567',
+            'catalog': '1346257',
+            'active': 'on'
+        }
+    )
 
     app.container = {
         #"message_controller": message_controller,

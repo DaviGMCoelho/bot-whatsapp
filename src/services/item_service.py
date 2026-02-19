@@ -2,13 +2,17 @@ from decimal import Decimal
 
 from src.services.base_service import BaseService
 from src.repositories.postgres.item.item_repository import ItemRepository
+from src.repositories.postgres.company.company_repository import CompanyRepository
+from src.repositories.postgres.catalog.catalog_repository import CatalogRepository
 from src.database.connection_pg import PostgresConn
 from src.domains.models.DTOs.create_item_dto import CreateItemDTO
 from src.domains.models.DTOs.update_item_dto import UpdateItemDTO
 from src.domains.models.item import Item
 
 class ItemService(BaseService):
-    def __init__ (self, psql_conn: PostgresConn, item_repo: ItemRepository):
+    def __init__ (self, psql_conn: PostgresConn, company_repo: CompanyRepository, catalog_repo: CatalogRepository, item_repo: ItemRepository):
+        self.catalog_repo_psql = catalog_repo
+        self.company_repo_psql = company_repo
         self.item_repo_psql = item_repo
         self.psql_conn = psql_conn
 
@@ -60,3 +64,11 @@ class ItemService(BaseService):
                 'status': 'error',
                 'message': f'{__name__} - {str(e)}'
             }
+
+    def change_item_state(self, update_item_dto: UpdateItemDTO):
+        is_active = self._translate_state(update_item_dto.active)
+
+        with self.psql_conn.connect() as conn:
+            company_id = self.company_repo_psql.get_company_by_cnpj(conn, update_item_dto.company)[0]
+            catalog_id = self.catalog_repo_psql.get_catalog_by_code(conn, update_item_dto.catalog, company_id)[0]
+            self.item_repo_psql.change_state(conn, catalog_id, company_id, update_item_dto.code, is_active)

@@ -1,8 +1,9 @@
 from decimal import Decimal
 
 class UpdateItemDTO:
-    def __init__(self, code: str, name: str = None, description: str = None, price: str = None, catalog: str = None, active: str = None):
+    def __init__(self, code: str, company: str = None, name: str = None, description: str = None, price: str = None, catalog: str = None, active: str = None):
         self.code = code.strip()
+        self.company = company
         self.name = name
         self.description = description
         self.price = price
@@ -63,8 +64,8 @@ class UpdateItemDTO:
 
 
     def _validate_active(self, active: str):
-        if active and active.strip().lower() not in ("true", "false"):
-            raise ValueError('Active inválido, apenas "true" ou "false"')
+        if active and active.strip().lower() not in ("on", "off"):
+            raise ValueError('Active inválido, apenas "on" ou "off"')
 
     def _validate_catalog(self, catalog_id: str):
         if catalog_id and not catalog_id.strip().isdigit():
