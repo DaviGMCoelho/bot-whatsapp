@@ -149,6 +149,8 @@ class CompanyService(BaseService):
             company_id = self.company_repo_psql.get_company_by_cnpj(conn, update_company_dto.cnpj)[0]
             self.address_repo_psql.update(conn, company_id, update_company_dto.address['code'], update_company_dto.address)
 
+
+    # ------- Change company state ------
     def change_company_state(self, update_company_dto: UpdateCompanyDTO):
         is_active = self._translate_state(update_company_dto.active)
 
@@ -156,3 +158,12 @@ class CompanyService(BaseService):
             company_id = self.company_repo_psql.get_company_by_cnpj(conn, update_company_dto.cnpj)[0]
             self.company_repo_psql.change_state(conn, company_id, is_active)
 
+
+    # ------- Change address state ------
+    def change_address_state(self, update_company_dto: UpdateCompanyDTO):
+        address = update_company_dto.address
+        is_active = self._translate_state(address['active'])
+
+        with self.psql_conn.connect() as conn:
+            company_id = self.company_repo_psql.get_company_by_cnpj(conn, update_company_dto.cnpj)[0]
+            self.address_repo_psql.change_state(conn, company_id, is_active, address['code'])

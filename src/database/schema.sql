@@ -40,6 +40,7 @@ CREATE TABLE personal."Item"(
 
 CREATE TABLE personal."Address"(
     id int generated always as identity primary key,
+    active boolean not null default TRUE,
     code char(7) not null unique,
     state varchar(100) not null,
     city varchar(100) not null,

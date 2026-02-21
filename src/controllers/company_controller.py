@@ -28,6 +28,7 @@ class CompanyController:
     def _organize_address(self, address_request: dict):
         treated_address = {}
         raw_address =  {
+            'active': address_request.get('active'),
             'code': address_request.get('code'),
             'state': address_request.get('estado'),
             'city': address_request.get('cidade'),
@@ -78,9 +79,25 @@ class CompanyController:
         update_company_dto = UpdateCompanyDTO(cnpj=cnpj, address=address)
         update = self.service.update_company_address(update_company_dto)
         return update
+
+
+    # ------- Change company state -------
     def change_company_state(self, request: dict):
         cnpj = request.get('cnpj')
         active = request.get('active')
         change_state_dto = UpdateCompanyDTO(cnpj=cnpj, active=active)
         change_state = self.service.change_company_state(change_state_dto)
         return change_state
+
+
+    # ------- Change address state -------
+    def change_address_state(self, request: dict):
+        cnpj = request.get('cnpj')
+        address = {
+            'code': request.get('code'),
+            'active': request.get('active')
+        }
+        change_state_dto = UpdateCompanyDTO(cnpj=cnpj, address=address)
+        change_state = self.service.change_address_state(change_state_dto)
+        return change_state
+
