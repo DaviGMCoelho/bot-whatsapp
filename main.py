@@ -74,15 +74,6 @@ def init_dependencies(app: Flask):
     catalog_controller = CatalogController(catalog_service)
     item_controller = ItemController(item_service)
 
-    item_controller.change_item_state(
-        {
-            'company': '12345678901234',
-            'code': '1234567',
-            'catalog': '1346257',
-            'active': 'on'
-        }
-    )
-
     app.container = {
         #"message_controller": message_controller,
         "company_controller": company_controller,

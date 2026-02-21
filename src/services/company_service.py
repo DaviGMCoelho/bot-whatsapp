@@ -83,6 +83,7 @@ class CompanyService(BaseService):
             'operation': list(current_days.values())
         }
 
+
     def register_company(self, create_company_dto: CreateCompanyDTO):
         try:
             company, address = self._convert_to_company_model(create_company_dto)
@@ -102,6 +103,7 @@ class CompanyService(BaseService):
                 'message': str(e)
             }
 
+
     def update_company_base(self, update_company_dto: UpdateCompanyDTO):
         try:
             data = update_company_dto.to_base_dict()
@@ -116,6 +118,7 @@ class CompanyService(BaseService):
                 'status': 'error',
                 'message': str(e)
             }
+
 
     def update_company_operation(self, update_company_dto: UpdateCompanyDTO):
         if not update_company_dto.operation:
@@ -137,6 +140,7 @@ class CompanyService(BaseService):
 
             self.company_repo_psql.update(conn, update_company_dto.cnpj, data)
 
+
     def update_company_address(self, update_company_dto: UpdateCompanyDTO):
         if not update_company_dto.address:
             raise ValueError("Address é obrigatório para a atualização")
@@ -144,3 +148,11 @@ class CompanyService(BaseService):
         with self.psql_conn.connect() as conn:
             company_id = self.company_repo_psql.get_company_by_cnpj(conn, update_company_dto.cnpj)[0]
             self.address_repo_psql.update(conn, company_id, update_company_dto.address['code'], update_company_dto.address)
+
+    def change_company_state(self, update_company_dto: UpdateCompanyDTO):
+        is_active = self._translate_state(update_company_dto.active)
+
+        with self.psql_conn.connect() as conn:
+            company_id = self.company_repo_psql.get_company_by_cnpj(conn, update_company_dto.cnpj)[0]
+            self.company_repo_psql.change_state(conn, company_id, is_active)
+

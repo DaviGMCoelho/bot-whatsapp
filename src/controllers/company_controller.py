@@ -78,3 +78,9 @@ class CompanyController:
         update_company_dto = UpdateCompanyDTO(cnpj=cnpj, address=address)
         update = self.service.update_company_address(update_company_dto)
         return update
+    def change_company_state(self, request: dict):
+        cnpj = request.get('cnpj')
+        active = request.get('active')
+        change_state_dto = UpdateCompanyDTO(cnpj=cnpj, active=active)
+        change_state = self.service.change_company_state(change_state_dto)
+        return change_state

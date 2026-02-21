@@ -24,6 +24,14 @@ class CompanyRepository (PostgresBaseRepository):
         with conn.cursor() as cursor:
             cursor.execute(sql_query, params)
 
+    def change_state(self, conn: connection, company_id: int, active: bool):
+        sql_query = self._load_query('company/queries/change_company_state.sql')
+        with conn.cursor() as cursor:
+            cursor.execute(sql_query, {
+                'active': active,
+                'company_id': company_id
+            })
+
     def get_company_operation(self, conn: connection, cnpj: str):
         sql_query = self._load_query('company/queries/get_company_operation.sql')
         with conn.cursor() as cursor:
