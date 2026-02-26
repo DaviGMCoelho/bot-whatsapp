@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Desempenho | BotVendas</title>
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="main-container">
+        <aside class="sidebar">
+            <div class="profile-section">
+                <img src="../static/perfil.jpg" class="profile-img" alt="Perfil">
+                <p>Minha conta</p>
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="dashboard.html"><i class="fas fa-home"></i> Início</a></li>
+                    <li><a href="empresa.html"><i class="fas fa-building"></i> Sua empresa</a></li>
+                    <li><a href="produtos.html"><i class="fas fa-box"></i> Produtos</a></li>
+                    <li class="active"><a href="desempenho.html"><i class="fas fa-chart-line"></i> Desempenho</a></li>
+                    <li><a href="#"><i class="fas fa-cog"></i> Configurações</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="header-top">
+                <h1>Desempenho</h1>
+                <div class="filter-bar">
+                    <div class="search-input" style="max-width: 300px;">
+                        <i class="fas fa-calendar-alt"></i>
+                        <select id="periodo" style="border:none; outline:none; background:none; width:100%; margin-left:10px; color:#2D8B7E; font-weight:bold;">
+                            <option value="dia">Hoje</option>
+                            <option value="semana">Esta Semana</option>
+                            <option value="mes" selected>Este Mês</option>
+                            <option value="ano">Este Ano</option>
+                        </select>
+                    </div>
+                    <button class="btn-primary"><i class="fas fa-filter"></i> Filtrar Produtos</button>
+                    <button class="btn-primary"><i class="fas fa-file-export"></i> Gerar Relatório</button>
+                </div>
+            </header>
+
+            <div class="charts-container">
+                <div class="section-card chart-large">
+                    <h2>Vendas Semanais</h2>
+                    <div class="chart-placeholder">
+                        <img src="https://via.placeholder.com/600x300/f0f2f5/2D8B7E?text=Gráfico+de+Barras+de+Vendas" alt="Gráfico de Vendas">
+                    </div>
+                </div>
+
+                <div class="metrics-grid">
+                    <div class="section-card">
+                        <h2>Distribuição de Vendas</h2>
+                        <div class="chart-placeholder">
+                            <img src="https://via.placeholder.com/300x200/f0f2f5/2D8B7E?text=Gráfico+Pizza" alt="Gráfico Pizza">
+                        </div>
+                    </div>
+                    <div class="section-card">
+                        <h2>Análise de Métricas</h2>
+                        <div class="chart-placeholder">
+                            <img src="https://via.placeholder.com/300x200/f0f2f5/2D8B7E?text=Gráfico+Radar" alt="Gráfico Radar">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard | BotVendas</title>
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="main-container">
+        <aside class="sidebar">
+            <div class="profile-section">
+                <img src="../static/perfil.jpg" class="profile-img" alt="Perfil">
+                <p>Minha conta</p>
+            </div>
+            <nav class="nav-menu">
+                <ul>
+                    <li class="active"><a href="dashboard.html"><i class="fas fa-home"></i> Início</a></li>
+                    <li><a href="empresa.html"><i class="fas fa-building"></i> Sua empresa</a></li>
+                    <li><a href="produtos.html"><i class="fas fa-box"></i> Produtos</a></li>
+                    <li><a href="desempenho.html"><i class="fas fa-chart-line"></i> Desempenho</a></li>
+                    <li><a href="#"><i class="fas fa-cog"></i> Configurações</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <h1>Seja bem vindo Davi Coelho!</h1>
+            
+            <div class="section-card">
+                <h2 style="color: #1A3E38; margin-bottom: 25px;">Visão geral do dia</h2>
+                <div class="stats-grid">
+                    <div class="stat-item"><h3>Vendas no dia</h3><p>R$ 1500,00</p></div>
+                    <div class="stat-item"><h3>Novos clientes</h3><p>10</p></div>
+                    <div class="stat-item"><h3>Produto mais vendido</h3><p>Fone bluetooth</p></div>
+                </div>
+            </div>
+
+            <div class="actions-grid">
+                <button class="btn-primary">Cadastrar novo produto</button>
+                <button class="btn-primary">Relatórios de vendas</button>
+                <button class="btn-primary">Configurar bot</button>
+                <button class="btn-primary">Gerenciar estoque</button>
+            </div>
+
+            <div class="section-card">
+                <h2 style="color: #1A3E38; margin-bottom: 30px;">Atividades recentes</h2>
+                <div class="timeline">
+                    <div class="timeline-item"><div class="timeline-dot"></div><p>Venda #234 confirmada</p></div>
+                    <div class="timeline-item"><div class="timeline-dot"></div><p>Produto "Notebook" atualizado com sucesso</p></div>
+                    <div class="timeline-item"><div class="timeline-dot"></div><p>Venda #124 confirmada</p></div>
+                    <div class="timeline-item"><div class="timeline-dot"></div><p>Venda #547 confirmada</p></div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
