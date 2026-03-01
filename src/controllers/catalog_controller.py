@@ -1,6 +1,6 @@
 from src.services.catalog_service import CatalogService
-from src.domains.models.DTOs.create_catalog_dto import CreateCatalogDTO
-from src.domains.models.DTOs.update_catalog_dto import UpdateCatalogDTO
+from src.domains.models.DTOs.catalog.create_catalog_dto import CreateCatalogDTO
+from src.domains.models.DTOs.catalog.update_catalog_dto import UpdateCatalogDTO
 
 class CatalogController:
     def __init__(self, service: CatalogService):

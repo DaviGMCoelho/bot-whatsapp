@@ -2,8 +2,8 @@ from src.services.base_service import BaseService
 from src.repositories.postgres.catalog.catalog_repository import CatalogRepository
 from src.repositories.postgres.company.company_repository import CompanyRepository
 from src.database.connection_pg import PostgresConn
-from src.domains.models.DTOs.create_catalog_dto import CreateCatalogDTO
-from src.domains.models.DTOs.update_catalog_dto import UpdateCatalogDTO
+from src.domains.models.DTOs.catalog.create_catalog_dto import CreateCatalogDTO
+from src.domains.models.DTOs.catalog.update_catalog_dto import UpdateCatalogDTO
 from src.domains.models.catalog import Catalog
 
 class CatalogService(BaseService):

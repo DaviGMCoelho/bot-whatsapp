@@ -1,6 +1,8 @@
 from psycopg2.extensions import connection
 from src.repositories.postgres.base_repository import PostgresBaseRepository
 
+from src.domains.models.DTOs.item.update_item_dto import UpdateItemDTO
+
 from src.domains.models.item import Item
 
 class ItemRepository(PostgresBaseRepository):

@@ -1,5 +1,6 @@
 class CreateItemDTO:
-    def __init__(self, code: str, name: str, description: str, price: str, catalog: str, active: str):
+    def __init__(self, company: int, code: str, name: str, description: str, price: str, catalog: str, active: str):
+        self.company = company
         self.code = code
         self.name = name
         self.description = description
@@ -25,7 +26,7 @@ class CreateItemDTO:
             raise ValueError("Preço deve ter no máximo 2 casas decimais")
 
     def _validate_active(self, active: str):
-        if active.lower() not in ("true", "false"):
+        if active.lower() not in ("on", "off"):
             raise ValueError("Active inválido, apenas 'true' ou 'false'")
 
     def _validate_catalog(self, catalog_id: str):

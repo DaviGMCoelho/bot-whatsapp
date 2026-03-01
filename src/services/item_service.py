@@ -5,8 +5,9 @@ from src.repositories.postgres.item.item_repository import ItemRepository
 from src.repositories.postgres.company.company_repository import CompanyRepository
 from src.repositories.postgres.catalog.catalog_repository import CatalogRepository
 from src.database.connection_pg import PostgresConn
-from src.domains.models.DTOs.create_item_dto import CreateItemDTO
-from src.domains.models.DTOs.update_item_dto import UpdateItemDTO
+from src.domains.models.DTOs.item.create_item_dto import CreateItemDTO
+from src.domains.models.DTOs.item.update_item_dto import UpdateItemDTO
+
 from src.domains.models.item import Item
 
 class ItemService(BaseService):

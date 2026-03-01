@@ -1,7 +1,7 @@
 from src.services.item_service import ItemService
-from src.domains.models.DTOs.create_item_dto import CreateItemDTO
-from src.domains.models.DTOs.update_item_dto import UpdateItemDTO
-
+from src.domains.models.DTOs.item.create_item_dto import CreateItemDTO
+from src.domains.models.DTOs.item.update_item_dto import UpdateItemDTO
+from src.domains.models.DTOs.item.change_state_item_dto import ChangeStateItemRequestDTO
 class ItemController:
     def __init__(self, service: ItemService):
         self.service = service

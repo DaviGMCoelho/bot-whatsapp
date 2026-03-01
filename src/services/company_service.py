@@ -5,8 +5,8 @@ from src.services.base_service import BaseService
 from src.repositories.postgres.company.company_repository import CompanyRepository
 from src.repositories.postgres.address.address_repository import AddressRepository
 from src.database.connection_pg import PostgresConn
-from src.domains.models.DTOs.create_company_dto import CreateCompanyDTO
-from src.domains.models.DTOs.update_company_dto import UpdateCompanyDTO
+from src.domains.models.DTOs.company.create_company_dto import CreateCompanyDTO
+from src.domains.models.DTOs.company.update_company_dto import UpdateCompanyDTO
 from src.domains.models.company import Company
 from src.domains.models.address import Address
 from src.domains.value_objects.operation import Operation

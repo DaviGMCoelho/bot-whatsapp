@@ -1,6 +1,6 @@
-from src.domains.models.DTOs.update_company_dto import UpdateCompanyDTO
+from src.domains.models.DTOs.company.update_company_dto import UpdateCompanyDTO
 from src.services.company_service import CompanyService
-from src.domains.models.DTOs.create_company_dto import CreateCompanyDTO
+from src.domains.models.DTOs.company.create_company_dto import CreateCompanyDTO
 
 class CompanyController:
     def __init__(self, service: CompanyService):

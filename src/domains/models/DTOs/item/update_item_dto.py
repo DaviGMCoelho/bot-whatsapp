@@ -1,14 +1,14 @@
 from decimal import Decimal
 
 class UpdateItemDTO:
-    def __init__(self, code: str, company: str = None, name: str = None, description: str = None, price: str = None, catalog: str = None, active: str = None):
+    def __init__(self, code: str, company: int, catalog: str, name: str = None, description: str = None, price: str = None):
         self.code = code.strip()
         self.company = company
-        self.name = name
-        self.description = description
-        self.price = price
-        self.catalog = catalog
-        self.active = active
+        self.catalog = catalog.strip() 
+        self.name = name.strip() if name else None
+        self.description = description.strip() if description else None
+        self.price = price.strip() if price else None
+
 
         self._validate()
 
@@ -18,13 +18,9 @@ class UpdateItemDTO:
         if self.name is not None:
             data['name'] = self.name.strip()
         if self.description is not None:
-            data['description'] = self.description.strip()
+            data['description'] = self.description
         if self.price is not None:
             data['price'] = Decimal(self.price)
-        if self.catalog is not None:
-            data['catalog_id'] = int(self.catalog)
-        if self.active is not None:
-            data['active'] = self.active.lower() == 'true'
 
         return data
 
@@ -43,25 +39,19 @@ class UpdateItemDTO:
             self._validate_price(self.price)
         if self.catalog:
             self._validate_catalog(self.catalog)
-        if self.active:
-            self._validate_active(self.active)
 
 
     def _validate_price(self, price: str):
         price_clean = price.strip()
         if not price_clean:
             raise ValueError('Preço não pode ser vazio')
-        
         parts = price_clean.split('.')
         if len(parts) > 2:
             raise ValueError("Preço inválido: formato numérico incorreto")
-        
         if not parts[0].isdigit() or (len(parts) == 2 and not parts[1].isdigit()):
             raise ValueError("Preço inválido: Deve conter apenas números")
-
         if len(parts) == 2 and len(parts[1]) > 2:
             raise ValueError('Preço deve ter no máximo 2 casas decimais')
-
 
     def _validate_active(self, active: str):
         if active and active.strip().lower() not in ("on", "off"):
