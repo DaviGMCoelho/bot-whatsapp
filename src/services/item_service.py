@@ -7,6 +7,7 @@ from src.repositories.postgres.catalog.catalog_repository import CatalogReposito
 from src.database.connection_pg import PostgresConn
 from src.domains.models.DTOs.item.create_item_dto import CreateItemDTO
 from src.domains.models.DTOs.item.update_item_dto import UpdateItemDTO
+from src.domains.models.DTOs.item.change_state_item_dto import ChangeStateItemRequestDTO
 
 from src.domains.models.item import Item
 
@@ -37,25 +38,35 @@ class ItemService(BaseService):
 
     def register_item(self, create_item_dto: CreateItemDTO):
         try:
-            item = self._convert_to_item_model(create_item_dto)
             with self.psql_conn.connect() as conn:
+                item = Item(
+                    company = create_item_dto.company,
+                    code = create_item_dto.code,
+                    name = create_item_dto.name,
+                    description = create_item_dto.description,
+                    price = Decimal(create_item_dto.price),
+                    catalog = self.catalog_repo_psql.get_catalog_by_code(conn, create_item_dto.catalog, create_item_dto.company)[0],
+                    active = create_item_dto.active
+                )
                 self.item_repo_psql.insert(conn, item)
 
-            print({
+            return {
                 'status': 'success',
                 'message': 'Item registrado corretamente'
-            })
+            }
         except Exception as e:
-            print({
+            return {
                 'status': 'error',
                 'message': f'{__name__} - {str(e)}'
-            })
+            }
 
     def update_item(self, update_item_dto: UpdateItemDTO):
         try:
-            item = update_item_dto.to_dict()
             with self.psql_conn.connect() as conn:
-                self.item_repo_psql.update(conn, update_item_dto.code, item)
+                catalog_id = self.catalog_repo_psql.get_catalog_by_code(conn, update_item_dto.catalog, update_item_dto.company)[0]
+                update_item_dto.catalog = catalog_id
+                self.item_repo_psql.update(conn, update_item_dto)
+
             return {
                 'status': 'success',
                 'message': 'Item atualizado corretamente'
@@ -66,10 +77,7 @@ class ItemService(BaseService):
                 'message': f'{__name__} - {str(e)}'
             }
 
-    def change_item_state(self, update_item_dto: UpdateItemDTO):
-        is_active = self._translate_state(update_item_dto.active)
-
+    def change_item_state(self, change_state_item_dto: ChangeStateItemRequestDTO):
         with self.psql_conn.connect() as conn:
-            company_id = self.company_repo_psql.get_company_by_cnpj(conn, update_item_dto.company)[0]
-            catalog_id = self.catalog_repo_psql.get_catalog_by_code(conn, update_item_dto.catalog, company_id)[0]
-            self.item_repo_psql.change_state(conn, catalog_id, company_id, update_item_dto.code, is_active)
+            catalog_id = self.catalog_repo_psql.get_catalog_by_code(conn, change_state_item_dto.catalog, change_state_item_dto.company)[0]
+            self.item_repo_psql.change_state(conn, catalog_id, change_state_item_dto.company, change_state_item_dto.code, change_state_item_dto.active)

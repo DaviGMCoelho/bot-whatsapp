@@ -2,6 +2,7 @@ from decimal import Decimal
 
 class Item:
     def __init__(self,
+                 company: str = None,
                  code: str = None,
                  name: str = None,
                  description: str = None,
@@ -9,6 +10,7 @@ class Item:
                  catalog: int = None,
                  active: bool = None
                  ):
+        self.company = company
         self.code = code
         self.name = name
         self.description = description

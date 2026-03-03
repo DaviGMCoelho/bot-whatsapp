@@ -15,6 +15,7 @@ class ItemRepository(PostgresBaseRepository):
 
         with conn.cursor() as cursor:
             cursor.execute(sql_query, {
+                'company_id': item.company,
                 'code': item.code,
                 'name': item.name,
                 'description': item.description,
@@ -24,10 +25,12 @@ class ItemRepository(PostgresBaseRepository):
             })
 
 
-    def update(self, conn: connection, item_code: str, data: dict):
+    def update(self, conn: connection, update_item_dto: UpdateItemDTO):
         query_raw = self._load_query('item/queries/update_item.sql')
-        sql_query, params = self._build_update_query(query_raw, self.ALLOWED_FIELDS, data)
-        params['code'] = item_code
+        sql_query, params = self._build_update_query(query_raw, self.ALLOWED_FIELDS, update_item_dto.to_dict())
+        params['code'] = update_item_dto.code
+        params['company_id'] = update_item_dto.company
+        params['catalog_id'] = update_item_dto.catalog
 
         with conn.cursor() as cursor:
             cursor.execute(sql_query, params)

@@ -1,6 +1,7 @@
 insert into 
 	personal."Item"
 	(
+		company_id,
 		code,
 		name,
 		description,
@@ -10,6 +11,7 @@ insert into
 	)
 values
 	(
+		%(company_id)s,
 		%(code)s,
 		%(name)s,
 		%(description)s,

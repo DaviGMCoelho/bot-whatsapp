@@ -14,13 +14,14 @@ class ItemController:
             'description': item_request.get('description') or None,
             'price': item_request.get('price') or None,
             'catalog': item_request.get('catalog') or None,
-            'active': item_request.get('active') or None
+            'active': item_request.get('active')
         }
         return item
 
     def register_item(self, request: dict):
         item = self._organize_data(request)
         create_item_dto = CreateItemDTO(
+            company = item['company'],
             code = item['code'],
             name = item['name'],
             description = item['description'],
@@ -36,18 +37,17 @@ class ItemController:
         update_item_dto = UpdateItemDTO(
             company = item['company'],
             code = item['code'],
+            catalog = item['catalog'],
             name = item['name'],
             description = item['description'],
-            price = item['price'],
-            catalog = item['catalog'],
-            active = item['active']
+            price = item['price']
         )
         update = self.service.update_item(update_item_dto)
         return update
     
     def change_item_state(self, request: dict):
         item = self._organize_data(request)
-        change_state = UpdateItemDTO(
+        change_state = ChangeStateItemRequestDTO(
             company = item['company'],
             code = item['code'],
             catalog = item['catalog'],
