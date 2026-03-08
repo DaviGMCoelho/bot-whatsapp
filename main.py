@@ -5,9 +5,10 @@ from dotenv import load_dotenv
 from flask import Flask
 
 from src.container import init_dependencies
-from src.routes.website_routes import website_bp
+from src.routes.website_routes import register_bp
 from src.routes.webhook_routes import webhook_bp
 from src.routes.website.product_routes import product_bp
+from src.routes.website.painel_routes import painel_bp
 
 def create_app():
     load_dotenv()
@@ -42,9 +43,10 @@ def create_app():
 
     init_dependencies(instance)
 
-    instance.register_blueprint(website_bp)
+    instance.register_blueprint(register_bp)
     instance.register_blueprint(webhook_bp)
     instance.register_blueprint(product_bp)
+    instance.register_blueprint(painel_bp)
 
     return instance
 
