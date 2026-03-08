@@ -12,7 +12,8 @@ class CompanyRepository (PostgresBaseRepository):
         with conn.cursor() as cursor:
             cursor.execute(sql_query, {
                 'name': company.name,
-                'operation': company.operation.to_json()
+                'operation': company.operation.to_json(),
+                'cnpj': company.cnpj
                 })
             return cursor.fetchone()[0]
 

@@ -1,6 +1,8 @@
 insert into
 	personal."Address"
 	(
+		active,
+		code,
 		state, 
 		city,
 		neighborhood,
@@ -8,11 +10,12 @@ insert into
 		number,
 		postal_code,
 		complement,
-		label,
 		company_id
 	)
 	values 
 	(
+		%(active)s,
+		%(code)s,
 		%(state)s,
 		%(city)s,
 		%(neighborhood)s,
@@ -20,6 +23,5 @@ insert into
 		%(number)s,
 		%(postal_code)s,
 		%(complement)s,
-		%(label)s,
 		%(company_id)s
 	)

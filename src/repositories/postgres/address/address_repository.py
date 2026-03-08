@@ -13,6 +13,8 @@ class AddressRepository(PostgresBaseRepository):
 
         with conn.cursor() as cursor:
             cursor.execute(sql_query, {
+                'active': address.active,
+                'code': address.code,
                 'state': address.state, 
                 'city': address.city,
                 'neighborhood': address.neighborhood,
@@ -20,7 +22,6 @@ class AddressRepository(PostgresBaseRepository):
                 'number': address.number,
                 'postal_code': address.postal_code,
                 'complement': address.complement,
-                'label': address.label,
                 'company_id': address.company_id
             })
 

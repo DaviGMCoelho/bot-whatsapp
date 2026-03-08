@@ -7,6 +7,7 @@ from src.repositories.postgres.address.address_repository import AddressReposito
 from src.database.connection_pg import PostgresConn
 from src.domains.models.DTOs.company.create_company_dto import CreateCompanyDTO
 from src.domains.models.DTOs.company.update_company_dto import UpdateCompanyDTO
+from src.domains.models.DTOs.address.create_address_dto import CreateAddressRequestDTO
 from src.domains.models.company import Company
 from src.domains.models.address import Address
 from src.domains.value_objects.operation import Operation
@@ -43,24 +44,28 @@ class CompanyService(BaseService):
                 )
             days.append(daily_hour)
         return Operation(days)
+    
+    def _convert_to_address_model(self, create_address_dto: CreateAddressRequestDTO):
+        address = Address(
+            active = create_address_dto.active,
+            code = create_address_dto.code,
+            state = create_address_dto.state,
+            city = create_address_dto.city,
+            neighborhood = create_address_dto.neighborhood,
+            street = create_address_dto.street,
+            number = create_address_dto.number,
+            postal_code = create_address_dto.postal_code,
+            complement = create_address_dto.complement,
+            company_id = create_address_dto.company_id
+        )
+        return address
 
     def _convert_to_company_model(self, create_company_dto: CreateCompanyDTO):
         company_name = create_company_dto.name
         company_cnpj = create_company_dto.cnpj
         operation = self._create_operation(create_company_dto.operation)
-        address_dto = create_company_dto.address
-
         company = Company(company_name, operation, company_cnpj)
-        address = Address(
-            state = address_dto.get('estado'),
-            city = address_dto.get('cidade'),
-            neighborhood = address_dto.get('bairro'),
-            street = address_dto.get('rua'),
-            number = address_dto.get('numero'),
-            postal_code = address_dto.get('cep'),
-            complement = address_dto.get('complemento'),
-        )
-        return company, address
+        return company
 
     def _merge_operation(self, current_operation_json: str, new_operation: dict):
         current_operation = json.loads(current_operation_json) if isinstance(current_operation_json, str) else current_operation_json
@@ -84,11 +89,13 @@ class CompanyService(BaseService):
         }
 
 
-    def register_company(self, create_company_dto: CreateCompanyDTO):
+    def register_company(self, create_company_dto: CreateCompanyDTO, create_address_dto: CreateAddressRequestDTO):
         try:
-            company, address = self._convert_to_company_model(create_company_dto)
+            company = self._convert_to_company_model(create_company_dto)
+            address = self._convert_to_address_model(create_address_dto)
+
             with self.psql_conn.transaction() as conn:
-                company_id = self.company_repo_psql.company_data_register(conn, company)
+                company_id = self.company_repo_psql.insert(conn, company)
                 address.company_id = company_id
                 self.address_repo_psql.insert(conn, address)
 
@@ -96,7 +103,6 @@ class CompanyService(BaseService):
                 'status': 'success',
                 'message': 'Empresa registrada corretamente'
             }
-
         except Exception as e:
             return {
                 'status': 'error',

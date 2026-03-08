@@ -1,5 +1,7 @@
 class Address:
     def __init__(self,
+                 active: bool,
+                 code: str,
                  state: str,
                  city: str,
                  neighborhood: str,
@@ -10,6 +12,8 @@ class Address:
                  label: str = '' ,
                  company_id: str = ''
                  ):
+        self.active = active
+        self.code = code
         self.state = state
         self.city = city
         self.neighborhood = neighborhood

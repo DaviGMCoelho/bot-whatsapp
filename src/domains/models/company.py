@@ -9,7 +9,6 @@ class Company:
 
         self.name = name
         self.operation = operation
-        self.active = False
         self.cnpj = cnpj
 
     def to_dict(self):

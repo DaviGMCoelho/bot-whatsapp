@@ -1,6 +1,7 @@
 from src.domains.models.DTOs.company.update_company_dto import UpdateCompanyDTO
 from src.services.company_service import CompanyService
 from src.domains.models.DTOs.company.create_company_dto import CreateCompanyDTO
+from src.domains.models.DTOs.address.create_address_dto import CreateAddressRequestDTO
 
 class CompanyController:
     def __init__(self, service: CompanyService):
@@ -49,13 +50,25 @@ class CompanyController:
         name = request.get('name')
         cnpj = request.get('cnpj')
         work_days = self._organize_operation(request.get('operation'))
-        address = self._organize_address(request.get('address'))
-        return name, cnpj, work_days, address
+        return name, cnpj, work_days
 
     def register_company(self, request: dict):
-        name, cnpj, work_days, address = self._normalize_company(request)
-        company_dto = CreateCompanyDTO(name, work_days, address, cnpj)
-        register = self.service.register_company(company_dto)
+        name, cnpj, work_days = self._normalize_company(request)
+        address = self._organize_address(request.get('address'))
+        company_dto = CreateCompanyDTO(name, cnpj, work_days)
+        address_dto = CreateAddressRequestDTO(
+            address['active'],
+            address['code'],
+            address['state'],
+            address['city'],
+            address['neighborhood'],
+            address['street'],
+            address['number'],
+            address['postal_code'],
+            address['complement'],
+            company_id = ''
+            )
+        register = self.service.register_company(company_dto, address_dto)
         return register
 
     def update_company_base(self, request: dict):

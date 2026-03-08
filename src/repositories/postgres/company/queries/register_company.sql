@@ -1,5 +1,5 @@
 insert into 
-	personal.Company
+	personal."Company"
 	(
 		name,
 		operation,
@@ -9,6 +9,6 @@ values
 	(
 		%(name)s,
 		%(operation)s::jsonb,
-		%(cnpj)%s
+		%(cnpj)s
 	)
 RETURNING id;
