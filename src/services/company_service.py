@@ -155,6 +155,11 @@ class CompanyService(BaseService):
             company_id = self.company_repo_psql.get_company_by_cnpj(conn, update_company_dto.cnpj)[0]
             self.address_repo_psql.update(conn, company_id, update_company_dto.address['code'], update_company_dto.address)
 
+    def get_company_with_address(self, company_id: int):
+        with self.psql_conn.transaction() as conn:
+            company = self.company_repo_psql.get_company_by_id(conn, company_id)
+            address = self.address_repo_psql.get_address_by_company_id(conn, company_id)
+        return company, address
 
     # ------- Change company state ------
     def change_company_state(self, update_company_dto: UpdateCompanyDTO):

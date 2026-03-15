@@ -2,7 +2,7 @@ from src.domains.models.DTOs.company.update_company_dto import UpdateCompanyDTO
 from src.services.company_service import CompanyService
 from src.domains.models.DTOs.company.create_company_dto import CreateCompanyDTO
 from src.domains.models.DTOs.address.create_address_dto import CreateAddressRequestDTO
-
+from src.view_models.your_company_vm import YourCompanyViewModel
 class CompanyController:
     def __init__(self, service: CompanyService):
         self.service = service
@@ -93,6 +93,24 @@ class CompanyController:
         update = self.service.update_company_address(update_company_dto)
         return update
 
+    def your_company_page(self, request: dict):
+        current_company = request.get('current_company')
+        if int(current_company):
+            data = self.service.get_company_with_address(int(current_company))
+            company = data[0]
+            address = data[1]
+
+            formatted_address = f'{address.neighborhood}. {address.street}, \
+                {address.number} - {address.city}, {address.state}'
+            formatted_active = 'Ativo' if company.active else 'Inativo'
+
+            view_model = YourCompanyViewModel(
+                name = company.name,
+                address = formatted_address,
+                cnpj = company.cnpj,
+                state = formatted_active
+            )
+            return view_model
 
     # ------- Change company state -------
     def change_company_state(self, request: dict):

@@ -1,3 +1,4 @@
+
 from psycopg2.extensions import connection
 from src.repositories.postgres.base_repository import PostgresBaseRepository
 from src.domains.models.address import Address
@@ -47,3 +48,24 @@ class AddressRepository(PostgresBaseRepository):
                 'company_id': company_id,
                 'address_code': address_code
                 })
+
+    def get_address_by_company_id(self, conn: connection, company_id: int):
+        sql_query = self._load_query('address/queries/get_address_by_company_id.sql')
+        with conn.cursor() as cursor:
+            cursor.execute (sql_query, {
+                'company_id': company_id
+            })
+            data = cursor.fetchone()
+            return Address(
+                active = data[1],
+                code = data[2],
+                state = data[3],
+                city = data[4],
+                neighborhood = data[5],
+                street = data[6],
+                number = data[7],
+                postal_code = data[8],
+                complement = data[9],
+                label = data[10],
+                company_id = company_id
+            )

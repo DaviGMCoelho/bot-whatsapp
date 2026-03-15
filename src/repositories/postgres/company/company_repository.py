@@ -48,3 +48,17 @@ class CompanyRepository (PostgresBaseRepository):
                 "cnpj": company_cnpj
             })
             return cursor.fetchone()
+        
+    def get_company_by_id(self, conn: connection, company_id: int):
+        sql_query = self._load_query('company/queries/get_company_by_id.sql')
+        with conn.cursor() as cursor:
+            cursor.execute(sql_query, {
+                "company_id": company_id
+            })
+            data = cursor.fetchone()
+            return Company(
+                name = data[0],
+                operation = data[1],
+                active = data[2],
+                cnpj = data[3]
+            )

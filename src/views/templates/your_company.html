@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Sua Empresa | BotVendas</title>
+    <title>Sua Empresa | {{ company.name }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -37,9 +37,9 @@
             <div class="section-card">
                 <h2>Dados básicos da empresa</h2>
                 <div class="info-container">
-                    <div class="info-row"><label>NOME:</label><span>Davi Coelho Bot</span></div>
-                    <div class="info-row"><label>ENDEREÇO:</label><span>Rua Exemplo, 123 - São Paulo</span></div>
-                    <div class="info-row"><label>CNPJ:</label><span>00.000.000/0001-00</span></div>
+                    <div class="info-row"><label>NOME:</label><span> {{ company.name }} </span></div>
+                    <div class="info-row"><label>ENDEREÇO:</label><span> {{ company.address }} </span></div>
+                    <div class="info-row"><label>CNPJ:</label><span> {{ company.cnpj }} </span></div>
                 </div>
             </div>
 
@@ -47,12 +47,7 @@
                 <h2>Informações e métricas</h2>
                 <div class="metrics-grid">
                     <div class="column">
-                        <div class="info-row"><label>SOBRE:</label><p>Bot de atendimento automatizado para vendas.</p></div>
-                        <div class="info-row"><label>WEBSITE:</label><p>www.davibot.com.br</p></div>
-                    </div>
-                    <div class="column">
-                        <div class="info-row"><label>DATA DE CADASTRO:</label><p>20/05/2024</p></div>
-                        <div class="info-row"><label>STATUS:</label><p style="color: #2D8B7E; font-weight: bold;">Ativo</p></div>
+                        <div class="info-row"><label>STATUS:</label><p style="color: #2D8B7E; font-weight: bold;"> {{ company.state }} </p></div>
                     </div>
                 </div>
             </div>

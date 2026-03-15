@@ -23,6 +23,8 @@ from src.controllers.company_controller import CompanyController
 from src.controllers.catalog_controller import CatalogController
 from src.controllers.item_controller import ItemController
 
+from src.controller_container import Container
+
 
 def init_dependencies(app: Flask):
     #evolution_cfg = app.config["EVOLUTION"]
@@ -66,9 +68,8 @@ def init_dependencies(app: Flask):
     catalog_controller = CatalogController(catalog_service)
     item_controller = ItemController(item_service)
 
-    app.container = {
-        #"message_controller": message_controller,
-        "company_controller": company_controller,
-        "catalog_controller": catalog_controller,
-        "item_controller": item_controller
-    }
+    app.container = Container(
+        company_controller = company_controller,
+        catalog_controller = catalog_controller,
+        item_controller = item_controller
+    )
