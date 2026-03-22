@@ -12,6 +12,19 @@ services:
     networks:
       - evolution-networks
 
+  chromadb:
+    container_name: evolution_chroma
+    image: chromadb/chroma
+    restart: always
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - evolution_chroma:/data
+    networks:
+      - evolution-networks
+
   postgres:
     container_name: evolution_postgres
     image: postgres:12
@@ -60,6 +73,7 @@ volumes:
   evolution_instances:
   evolution_postgres:
   evolution_redis:
+  evolution_chroma:
 
 networks:
   evolution-networks:

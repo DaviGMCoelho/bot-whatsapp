@@ -2,7 +2,7 @@ from flask import Flask
 
 #from src.clients.evolution_client import EvolutionClient
 #from src.clients.gemini_client import GeminiClient
-
+from src.database.chroma_db.connection import ChromaConn
 from src.database.connection_pg import PostgresConn
 from src.database.migrations import init_database
 #from src.repositories.postgres.message.message_repository import MessageRepository
@@ -28,15 +28,21 @@ def init_dependencies(app: Flask):
     #evolution_cfg = app.config["EVOLUTION"]
     #gemini_cfg = app.config["GEMINI"]
     postgres_cfg = app.config["POSTGRES"]
+    chromadb_cfg = app.config["CHROMADB"]
 
     #evolution_client = EvolutionClient(
     #    evolution_cfg["EVOLUTION_API"],
     #    evolution_cfg["EVOLUTION_HOST"]
-    #    )
+    #   )
 
     #gemini_client = GeminiClient(
     #    gemini_cfg["GOOGLE_API"]
     #)
+
+    conn_chromadb = ChromaConn(
+        chromadb_cfg["CHROMADB_HOST"],
+        chromadb_cfg["CHROMADB_PORT"]
+    )
 
     conn_postgres = PostgresConn(
         postgres_cfg["PSQL_DB"],

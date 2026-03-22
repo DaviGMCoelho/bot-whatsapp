@@ -31,6 +31,10 @@ def create_app():
         "EVOLUTION_API": os.getenv("AUTHENTICATION_API_KEY"),
         "EVOLUTION_HOST": os.getenv("EVOLUTION_API_HOST", "evolution-api")
     }
+    instance.config["CHROMADB"] = {
+        "CHROMADB_HOST": os.getenv("CHROMADB_HOST"),
+        "CHROMADB_PORT": os.getenv("CHROMADB_PORT")
+    }
     instance.config["POSTGRES"] = {
         "PSQL_MIGRATIONS": os.getenv("POSTGRES_RUN_MIGRATIONS") == "true",
         "PSQL_DB": os.getenv("POSTGRES_DB"),

@@ -3,6 +3,7 @@ requests
 langchain-community
 langchain-core
 langchain-google-genai
+chromadb
 langchain
 python-dotenv
 faiss-cpu
