@@ -5,6 +5,7 @@ from flask import Flask
 from src.database.chroma_db.connection import ChromaConn
 from src.database.connection_pg import PostgresConn
 from src.database.migrations import init_database
+from src.database.chroma_db.migration import ChromaMigration
 #from src.repositories.postgres.message.message_repository import MessageRepository
 from src.repositories.postgres.company.company_repository import CompanyRepository
 from src.repositories.postgres.address.address_repository import AddressRepository
@@ -43,6 +44,7 @@ def init_dependencies(app: Flask):
         chromadb_cfg["CHROMADB_HOST"],
         chromadb_cfg["CHROMADB_PORT"]
     )
+    chroma_migration = ChromaMigration(conn_chromadb)
 
     conn_postgres = PostgresConn(
         postgres_cfg["PSQL_DB"],
@@ -59,6 +61,8 @@ def init_dependencies(app: Flask):
 
     if app.config["POSTGRES"]["PSQL_MIGRATIONS"] is True:
         init_database(conn_postgres)
+    if app.config["CHROMADB"]["CHROMADB_MIGRATIONS"] is True:
+        chroma_migration.init_collections()
 
     #evolution_service = EvolutionService(evolution_client)
     #gemini_service = GeminiService(gemini_client, gemini_cfg["CSV_PATH"])

@@ -33,7 +33,8 @@ def create_app():
     }
     instance.config["CHROMADB"] = {
         "CHROMADB_HOST": os.getenv("CHROMADB_HOST"),
-        "CHROMADB_PORT": os.getenv("CHROMADB_PORT")
+        "CHROMADB_PORT": os.getenv("CHROMADB_PORT"),
+        "CHROMADB_MIGRATIONS": os.getenv("CHROMADB_RUN_MIGRATIONS")
     }
     instance.config["POSTGRES"] = {
         "PSQL_MIGRATIONS": os.getenv("POSTGRES_RUN_MIGRATIONS") == "true",
