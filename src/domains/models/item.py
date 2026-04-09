@@ -2,7 +2,8 @@ from decimal import Decimal
 
 class Item:
     def __init__(self,
-                 company: str = None,
+                 item_id: int = None,
+                 company_id: int = None,
                  code: str = None,
                  name: str = None,
                  description: str = None,
@@ -10,7 +11,8 @@ class Item:
                  catalog: int = None,
                  active: bool = None
                  ):
-        self.company = company
+        self.item_id = item_id
+        self.company_id = company_id
         self.code = code
         self.name = name
         self.description = description
@@ -22,7 +24,8 @@ class Item:
 
     def _validate(self):
         for arg, value in self.__dict__.items():
-            if value is None:
+            print(arg, value)
+            if value is None and not 'item_id':
                 error = f'{arg} não pode ser None'
                 raise ValueError(error)
         if not self._price_is_more_than_zero(self.price):

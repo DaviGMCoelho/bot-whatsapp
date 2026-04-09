@@ -1,6 +1,6 @@
 from src.database.chroma_db.connection import ChromaConn
 
-class ChromaMigration:
+class ChromaCollection:
     def __init__(self, client: ChromaConn):
         self.client = client.chroma
         self.products = None

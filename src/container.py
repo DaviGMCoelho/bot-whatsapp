@@ -5,12 +5,13 @@ from flask import Flask
 from src.database.chroma_db.connection import ChromaConn
 from src.database.connection_pg import PostgresConn
 from src.database.migrations import init_database
-from src.database.chroma_db.migration import ChromaMigration
+from src.database.chroma_db.collection import ChromaCollection
 #from src.repositories.postgres.message.message_repository import MessageRepository
 from src.repositories.postgres.company.company_repository import CompanyRepository
 from src.repositories.postgres.address.address_repository import AddressRepository
 from src.repositories.postgres.catalog.catalog_repository import CatalogRepository
 from src.repositories.postgres.item.item_repository import ItemRepository
+from src.repositories.chroma.product_chroma_repo import ProductChromaRepository
 
 #from src.services.evolution_service import EvolutionService
 #from src.services.gemini_service import GeminiService
@@ -44,7 +45,7 @@ def init_dependencies(app: Flask):
         chromadb_cfg["CHROMADB_HOST"],
         chromadb_cfg["CHROMADB_PORT"]
     )
-    chroma_migration = ChromaMigration(conn_chromadb)
+    chroma_collection = ChromaCollection(conn_chromadb)
 
     conn_postgres = PostgresConn(
         postgres_cfg["PSQL_DB"],
@@ -58,18 +59,19 @@ def init_dependencies(app: Flask):
     psql_address_repo = AddressRepository()
     psql_catalog_repo = CatalogRepository()
     psql_item_repo = ItemRepository()
+    chroma_item_repo = ProductChromaRepository(chroma_collection)
 
     if app.config["POSTGRES"]["PSQL_MIGRATIONS"] is True:
         init_database(conn_postgres)
     if app.config["CHROMADB"]["CHROMADB_MIGRATIONS"] is True:
-        chroma_migration.init_collections()
+        chroma_collection.init_collections()
 
     #evolution_service = EvolutionService(evolution_client)
     #gemini_service = GeminiService(gemini_client, gemini_cfg["CSV_PATH"])
     #message_service = MessageService(conn_postgres, evolution_service, gemini_service, psql_message_repo)
     company_service = CompanyService(conn_postgres, psql_company_repo, psql_address_repo)
     catalog_service = CatalogService(conn_postgres, psql_catalog_repo, psql_company_repo)
-    item_service = ItemService(conn_postgres, psql_company_repo, psql_catalog_repo, psql_item_repo)
+    item_service = ItemService(conn_postgres, psql_company_repo, psql_catalog_repo, psql_item_repo, chroma_item_repo)
 
     #message_controller = MessageController(message_service)
     company_controller = CompanyController(company_service)

@@ -21,7 +21,6 @@ class CompanyRepository (PostgresBaseRepository):
         query_raw = self._load_query('company/queries/update_company.sql')
         sql_query, params = self._build_update_query(query_raw, self.ALLOWED_FIELDS, data)
         params['cnpj'] = cnpj
-
         with conn.cursor() as cursor:
             cursor.execute(sql_query, params)
 
@@ -46,5 +45,13 @@ class CompanyRepository (PostgresBaseRepository):
         with conn.cursor() as cursor:
             cursor.execute(sql_query, {
                 "cnpj": company_cnpj
+            })
+            return cursor.fetchone()
+        
+    def get_company_by_id(self, conn: connection, company_id: int):
+        sql_query = self._load_query('company/queries/get_company_by_id.sql')
+        with conn.cursor() as cursor:
+            cursor.execute(sql_query, {
+                "company_id": company_id
             })
             return cursor.fetchone()

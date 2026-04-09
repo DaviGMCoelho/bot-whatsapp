@@ -4,11 +4,10 @@ class UpdateItemDTO:
     def __init__(self, code: str, company: int, catalog: str, name: str = None, description: str = None, price: str = None):
         self.code = code.strip()
         self.company = company
-        self.catalog = catalog.strip() 
+        self.catalog = catalog.strip()
         self.name = name.strip() if name else None
         self.description = description.strip() if description else None
         self.price = price.strip() if price else None
-
 
         self._validate()
 

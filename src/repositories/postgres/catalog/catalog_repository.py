@@ -37,6 +37,15 @@ class CatalogRepository(PostgresBaseRepository):
                 'company_id': company_id
             })
             return cursor.fetchone()
+        
+    def get_catalog_by_id(self, conn: connection, catalog_id: int):
+        sql_query = self._load_query('catalog/queries/get_catalog_by_id.sql')
+
+        with conn.cursor() as cursor:
+            cursor.execute(sql_query, {
+                'catalog_id': catalog_id
+            })
+            return cursor.fetchone()
 
 
     def change_state(self, conn: connection, company_id: int, catalog_code: str, active: bool):
