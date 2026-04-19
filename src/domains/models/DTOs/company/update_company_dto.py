@@ -1,8 +1,10 @@
-class UpdateCompanyDTO:
+from src.domains.models.DTOs.base_dto import BaseDTO
+
+class UpdateCompanyDTO(BaseDTO):
     def __init__(self,
         cnpj: str,
         name: str = None,
-        active: str = None,
+        active: str | bool = None,
         operation: dict = None,
         address: dict = None
     ):
@@ -11,6 +13,11 @@ class UpdateCompanyDTO:
         self.active = active
         self.operation = operation
         self.address = address
+
+
+    def __post_init__(self):
+        self.active = self._translate_state(self.active)
+
 
     def to_base_dict(self):
         data = {}

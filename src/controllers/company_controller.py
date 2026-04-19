@@ -2,7 +2,7 @@ from src.domains.models.DTOs.company.update_company_dto import UpdateCompanyDTO
 from src.services.company_service import CompanyService
 from src.domains.models.DTOs.company.create_company_dto import CreateCompanyDTO
 from src.domains.models.DTOs.address.create_address_dto import CreateAddressRequestDTO
-
+from src.domains.models.DTOs.address.change_address_state_dto import ChangeAddressStateRequestDTO
 class CompanyController:
     def __init__(self, service: CompanyService):
         self.service = service
@@ -57,8 +57,7 @@ class CompanyController:
         address = self._organize_address(request.get('address'))
         company_dto = CreateCompanyDTO(name, cnpj, work_days)
         address_dto = CreateAddressRequestDTO(
-            address['active'],
-            address['code'],
+            True,
             address['state'],
             address['city'],
             address['neighborhood'],
@@ -105,12 +104,14 @@ class CompanyController:
 
     # ------- Change address state -------
     def change_address_state(self, request: dict):
-        cnpj = request.get('cnpj')
-        address = {
-            'code': request.get('code'),
-            'active': request.get('active')
-        }
-        change_state_dto = UpdateCompanyDTO(cnpj=cnpj, address=address)
+        company = request.get('company_id')
+        address = request.get('address_code')
+        active = request.get('active')
+        change_state_dto = ChangeAddressStateRequestDTO(
+            company_id = company,
+            address_code = address,
+            active = active
+        )
         change_state = self.service.change_address_state(change_state_dto)
         return change_state
 

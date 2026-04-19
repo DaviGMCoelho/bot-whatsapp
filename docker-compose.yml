@@ -27,7 +27,7 @@ services:
 
   postgres:
     container_name: evolution_postgres
-    image: postgres:12
+    image: postgres:15
     restart: always
     ports:
       - "5441:5432"

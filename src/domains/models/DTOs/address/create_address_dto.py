@@ -4,7 +4,6 @@ from src.domains.models.DTOs.base_dto import BaseDTO
 @dataclass
 class CreateAddressRequestDTO(BaseDTO):
     active: str | bool
-    code: str
     state: str
     city: str
     neighborhood: str
