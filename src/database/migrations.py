@@ -8,7 +8,7 @@ def init_database(connection: PostgresConn):
     with open(schema_path, "r", encoding="utf-8") as schema:
         schema_sql = schema.read()
 
-    with connection.get_connection() as conn:
+    with connection.connect() as conn:
         with conn.cursor() as cursor:
             cursor.execute(schema_sql)
             conn.commit()

@@ -10,6 +10,7 @@ from src.database.chroma_db.collection import ChromaCollection
 from src.repositories.postgres.company.company_repository import CompanyRepository
 from src.repositories.postgres.address.address_repository import AddressRepository
 from src.repositories.postgres.catalog.catalog_repository import CatalogRepository
+from src.repositories.postgres.quote.quote_repository import QuoteRepository
 from src.repositories.postgres.item.item_repository import ItemRepository
 from src.repositories.chroma.product_chroma_repo import ProductChromaRepository
 
@@ -19,11 +20,13 @@ from src.repositories.chroma.product_chroma_repo import ProductChromaRepository
 from src.services.company_service import CompanyService
 from src.services.catalog_service import CatalogService
 from src.services.item_service import ItemService
+from src.services.quote_service import QuoteService
 
 #from src.controllers.message_controller import MessageController
 from src.controllers.company_controller import CompanyController
 from src.controllers.catalog_controller import CatalogController
 from src.controllers.item_controller import ItemController
+from src.controllers.quote_controller import QuoteController
 
 
 def init_dependencies(app: Flask):
@@ -59,6 +62,7 @@ def init_dependencies(app: Flask):
     psql_address_repo = AddressRepository()
     psql_catalog_repo = CatalogRepository()
     psql_item_repo = ItemRepository()
+    psql_quote_repo = QuoteRepository()
     chroma_item_repo = ProductChromaRepository(chroma_collection)
 
     if app.config["POSTGRES"]["PSQL_MIGRATIONS"] is True:
@@ -72,15 +76,18 @@ def init_dependencies(app: Flask):
     company_service = CompanyService(conn_postgres, psql_company_repo, psql_address_repo)
     catalog_service = CatalogService(conn_postgres, psql_catalog_repo, psql_company_repo)
     item_service = ItemService(conn_postgres, psql_company_repo, psql_catalog_repo, psql_item_repo, chroma_item_repo)
+    quote_service = QuoteService(conn_postgres, psql_quote_repo)
 
     #message_controller = MessageController(message_service)
     company_controller = CompanyController(company_service)
     catalog_controller = CatalogController(catalog_service)
     item_controller = ItemController(item_service)
+    quote_controller = QuoteController(quote_service)
 
     app.container = {
         #"message_controller": message_controller,
         "company_controller": company_controller,
         "catalog_controller": catalog_controller,
-        "item_controller": item_controller
+        "item_controller": item_controller,
+        "quote_controller": quote_controller
     }

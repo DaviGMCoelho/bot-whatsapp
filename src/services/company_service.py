@@ -1,5 +1,8 @@
 from datetime import datetime
 import json
+import hashlib
+import re
+import unicodedata
 
 from src.services.base_service import BaseService
 from src.repositories.postgres.company.company_repository import CompanyRepository
@@ -8,6 +11,7 @@ from src.database.connection_pg import PostgresConn
 from src.domains.models.DTOs.company.create_company_dto import CreateCompanyDTO
 from src.domains.models.DTOs.company.update_company_dto import UpdateCompanyDTO
 from src.domains.models.DTOs.address.create_address_dto import CreateAddressRequestDTO
+from src.domains.models.DTOs.address.change_address_state_dto import ChangeAddressStateRequestDTO
 from src.domains.models.company import Company
 from src.domains.models.address import Address
 from src.domains.value_objects.operation import Operation
@@ -45,10 +49,10 @@ class CompanyService(BaseService):
             days.append(daily_hour)
         return Operation(days)
     
-    def _convert_to_address_model(self, create_address_dto: CreateAddressRequestDTO):
+    def _convert_to_address_model(self, create_address_dto: CreateAddressRequestDTO, address_code: str):
         address = Address(
             active = create_address_dto.active,
-            code = create_address_dto.code,
+            code = address_code,
             state = create_address_dto.state,
             city = create_address_dto.city,
             neighborhood = create_address_dto.neighborhood,
@@ -87,12 +91,41 @@ class CompanyService(BaseService):
         return {
             'operation': list(current_days.values())
         }
-
+    
+    def _generate_address_code(self, company_name: str, address: CreateAddressRequestDTO):
+        def normalize_string(raw_string: str):
+            string = raw_string.lower().strip()
+            value = unicodedata.normalize('NFKD', string)
+            value = value.encode('ascii', 'ignore').decode('ascii')
+            normalized_string = re.sub(r'\s+', ' ', value)
+            return normalized_string
+    
+        raw_parts = [
+            company_name,
+            address.street,
+            str(address.number),
+            address.city,
+            address.state,
+            address.postal_code
+        ]
+        normalized = [
+            normalize_string(str(p))
+            for p in raw_parts
+            if p is not None
+        ]
+        final_string = '|'.join(normalized)
+        hash_object = hashlib.sha256(final_string.encode())
+        code = hash_object.hexdigest()
+        return code[:7]
 
     def register_company(self, create_company_dto: CreateCompanyDTO, create_address_dto: CreateAddressRequestDTO):
         try:
+            address_code = self._generate_address_code(
+                create_company_dto.name,
+                create_address_dto
+                )
             company = self._convert_to_company_model(create_company_dto)
-            address = self._convert_to_address_model(create_address_dto)
+            address = self._convert_to_address_model(create_address_dto, address_code)
 
             with self.psql_conn.transaction() as conn:
                 company_id = self.company_repo_psql.insert(conn, company)
@@ -156,20 +189,13 @@ class CompanyService(BaseService):
             self.address_repo_psql.update(conn, company_id, update_company_dto.address['code'], update_company_dto.address)
 
 
-    # ------- Change company state ------
     def change_company_state(self, update_company_dto: UpdateCompanyDTO):
-        is_active = self._translate_state(update_company_dto.active)
-
         with self.psql_conn.connect() as conn:
             company_id = self.company_repo_psql.get_company_by_cnpj(conn, update_company_dto.cnpj)[0]
-            self.company_repo_psql.change_state(conn, company_id, is_active)
+            self.company_repo_psql.change_state(conn, company_id, update_company_dto.active)
 
 
     # ------- Change address state ------
-    def change_address_state(self, update_company_dto: UpdateCompanyDTO):
-        address = update_company_dto.address
-        is_active = self._translate_state(address['active'])
-
+    def change_address_state(self, dto: ChangeAddressStateRequestDTO):
         with self.psql_conn.connect() as conn:
-            company_id = self.company_repo_psql.get_company_by_cnpj(conn, update_company_dto.cnpj)[0]
-            self.address_repo_psql.change_state(conn, company_id, is_active, address['code'])
+            self.address_repo_psql.change_state(conn, dto.company_id, dto.active, dto.address_code)

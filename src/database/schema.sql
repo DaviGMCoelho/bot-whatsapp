@@ -77,3 +77,27 @@ CREATE TABLE personal."Session"(
     closed_at TIMESTAMPTZ,
     summary jsonb not null
 );
+
+create table personal."Quote_Type"(
+	id int generated always as identity primary key,
+	quote_type varchar(50) not null,
+    is_default boolean not null default false,
+    company_id int null references personal."Company"(id) on delete cascade,
+    active boolean not null default true,
+
+    constraint unique_name_per_scope unique (quote_type, company_id),
+    constraint check_default_or_company
+    check(
+        (is_default = true and company_id is null)
+        or
+        (is_default = false and company_id is not null)
+    )
+);
+
+create table personal."Quote"(
+	id int generated always as identity primary key,
+	company_id int not null references personal."Company"(id) on delete cascade,
+	quote_type_id int not null references personal."Quote_Type"(id) on delete restrict,
+	content TEXT not null,
+	active bool not null default true
+);
