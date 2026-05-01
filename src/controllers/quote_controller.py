@@ -6,6 +6,7 @@ class QuoteController:
         self.service = service
 
     def add(self, request: dict):
+        print('add controller')
         company_id = int(request.get('company_id'))
         quote = CreateQuoteRequestDTO(
             quote = request.get('quote_text'),

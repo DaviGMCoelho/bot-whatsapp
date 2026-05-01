@@ -13,6 +13,7 @@ from src.repositories.postgres.catalog.catalog_repository import CatalogReposito
 from src.repositories.postgres.quote.quote_repository import QuoteRepository
 from src.repositories.postgres.item.item_repository import ItemRepository
 from src.repositories.chroma.product_chroma_repo import ProductChromaRepository
+from src.repositories.chroma.quote_chroma_repo import QuoteChromaRepository
 
 #from src.services.evolution_service import EvolutionService
 #from src.services.gemini_service import GeminiService
@@ -64,6 +65,7 @@ def init_dependencies(app: Flask):
     psql_item_repo = ItemRepository()
     psql_quote_repo = QuoteRepository()
     chroma_item_repo = ProductChromaRepository(chroma_collection)
+    chroma_quote_repo = QuoteChromaRepository(chroma_collection)
 
     if app.config["POSTGRES"]["PSQL_MIGRATIONS"] is True:
         init_database(conn_postgres)
@@ -76,7 +78,7 @@ def init_dependencies(app: Flask):
     company_service = CompanyService(conn_postgres, psql_company_repo, psql_address_repo)
     catalog_service = CatalogService(conn_postgres, psql_catalog_repo, psql_company_repo)
     item_service = ItemService(conn_postgres, psql_company_repo, psql_catalog_repo, psql_item_repo, chroma_item_repo)
-    quote_service = QuoteService(conn_postgres, psql_quote_repo)
+    quote_service = QuoteService(conn_postgres, psql_quote_repo, chroma_quote_repo)
 
     #message_controller = MessageController(message_service)
     company_controller = CompanyController(company_service)
