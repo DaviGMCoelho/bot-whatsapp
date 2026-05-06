@@ -7,6 +7,7 @@ class CreateChromaQuoteDTO(BaseDTO):
     quote: str
     company_id: int
     quote_type: str
+    code: str
 
     def to_dict(self):
         return {

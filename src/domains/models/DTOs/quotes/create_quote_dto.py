@@ -7,6 +7,7 @@ class CreateQuoteRequestDTO(BaseDTO):
     company_id: int
     quote_type: str
     active: bool
+    code: str
 
     def __post_init__(self):
         self.active = self._translate_state(self.active)

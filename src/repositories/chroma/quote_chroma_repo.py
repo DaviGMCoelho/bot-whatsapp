@@ -20,12 +20,16 @@ class QuoteChromaRepository:
             metadatas = [{
                 "quote_id": dto.quote_id,
                 "company_id": dto.company_id,
-                "quote_type": dto.quote_type
+                "quote_type": dto.quote_type,
+                "code": dto.code
             }]
         )
 
+    def delete_quote(self, quote_id: str):
+        self.conn.company.delete(ids = [quote_id])
+
     def get_quote(self, quote_id: str, company_id: int):
-        response = self.conn.company.query(
-            where = {'quote_id': quote_id, 'company_id': company_id}
+        response = self.conn.company.get(
+            ids = [quote_id]
         )
         return response

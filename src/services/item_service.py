@@ -118,11 +118,8 @@ class ItemService(BaseService):
             product_id = self.item_repo_psql.change_state(conn, catalog_id, change_state_item_dto.company, change_state_item_dto.code, change_state_item_dto.active)
             print(change_state_item_dto.active)
             if not change_state_item_dto.active:
-                print(product_id)
                 product = self._generate_product_chroma_id(product_id)
-                print(product)
                 self.item_repo_chroma.delete_product(product)
-                print('produto deletado')
             else:
                 product = self.item_repo_psql.get_item_by_code(conn, change_state_item_dto.code, change_state_item_dto.company)
                 product_chroma = CreateChromaItemDTO(

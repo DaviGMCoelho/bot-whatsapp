@@ -99,5 +99,8 @@ create table personal."Quote"(
 	company_id int not null references personal."Company"(id) on delete cascade,
 	quote_type_id int not null references personal."Quote_Type"(id) on delete restrict,
 	content TEXT not null,
-	active bool not null default true
+	active bool not null default true,
+    code char(7) not null,
+
+    constraint unique_code_per_scope unique (code, company_id)
 );
