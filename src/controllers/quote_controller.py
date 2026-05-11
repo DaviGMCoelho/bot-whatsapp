@@ -1,6 +1,7 @@
 from src.services.quote_service import QuoteService
 from src.domains.models.DTOs.quotes.create_quote_dto import CreateQuoteRequestDTO
 from src.domains.models.DTOs.quotes.change_quote_state_dto import ChangeStateQuoteRequestDTO
+from src.domains.models.DTOs.quotes.update_quote_dto import UpdateQuoteRequestDTO
 class QuoteController:
     def __init__(self, service: QuoteService):
         self.service = service
@@ -26,3 +27,16 @@ class QuoteController:
             active = active
         )
         return self.service.change_state(change_state)
+
+    def update(self, request: dict):
+        company_id = int(request.get('company_id'))
+        quote_code = request.get('quote_code')
+        content = request.get('content')
+        quote_type = request.get('quote_type')
+        update = UpdateQuoteRequestDTO(
+            code = quote_code,
+            company_id = company_id,
+            text = content,
+            type = quote_type
+        )
+        return self.service.update_quote(update)

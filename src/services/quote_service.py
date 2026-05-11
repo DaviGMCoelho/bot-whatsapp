@@ -5,6 +5,8 @@ from src.repositories.chroma.quote_chroma_repo import QuoteChromaRepository
 from src.domains.models.DTOs.quotes.create_quote_dto import CreateQuoteRequestDTO
 from src.domains.models.DTOs.quotes.create_quote_chroma_dto import CreateChromaQuoteDTO
 from src.domains.models.DTOs.quotes.change_quote_state_dto import ChangeStateQuoteRequestDTO
+from src.domains.models.DTOs.quotes.update_quote_dto import UpdateQuoteRequestDTO
+from src.domains.models.full_quote import FullQuote
 class QuoteService(BaseService):
     def __init__(self, psql_conn: PostgresConn, psql_repo: QuoteRepository, chroma_repo: QuoteChromaRepository):
         self.psql_conn = psql_conn
@@ -16,6 +18,15 @@ class QuoteService(BaseService):
 
     def _get_quote_type_id(self, conn, quote_type: str, company_id: int):
         return self.psql_repo.get_quote_type(conn, quote_type, company_id)
+    
+    def _built_create_chroma_quote(self, quote_id: str, full_quote: FullQuote):
+        return CreateChromaQuoteDTO(
+                quote_id = self._generate_quote_chroma_id(quote_id),
+                quote = full_quote.text,
+                company_id = full_quote.company_id,
+                quote_type = full_quote.type,
+                code = full_quote.code
+            )
 
     def add_quote(self, dto: CreateQuoteRequestDTO):
         try:
@@ -56,7 +67,7 @@ class QuoteService(BaseService):
                         quote_id = chroma_quote_id,
                         quote = quote.text,
                         company_id = quote.company_id,
-                        quote_type = quote.type,
+                        quote_type = quote.quote_type,
                         code = quote.code
                     )
                     self.chroma_repo.upsert_quote(quote_chroma)
@@ -70,3 +81,25 @@ class QuoteService(BaseService):
                 'status': 'error',
                 'message': f'{__name__} - {str(e)}'
             }
+        
+    def update_quote(self, dto: UpdateQuoteRequestDTO):
+        try:
+            with self.psql_conn.connect() as conn:
+                type_id = ''
+                if dto.type:
+                    type_id = self._get_quote_type_id(conn, dto.type, dto.company_id)
+                data = dto.to_dict(type_id)
+                quote_id = self.psql_repo.update_quote(conn, dto.company_id, dto.code, data)
+                quote = self.psql_repo.get_quote_by_code(conn, dto.code, dto.company_id)
+                chroma_quote = self._built_create_chroma_quote(quote_id, quote)
+                self.chroma_repo.upsert_quote(chroma_quote)
+            return {
+                'status': 'sucess',
+                'message': 'Alteração realiazda corretamente'
+            }
+        except Exception as e:
+            return {
+                'status': 'error',
+                'message': f'{__name__} - {str(e)}'
+            }
+
