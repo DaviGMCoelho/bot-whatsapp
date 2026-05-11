@@ -30,6 +30,7 @@ class QuoteChromaRepository:
 
     def get_quote(self, quote_id: str, company_id: int):
         response = self.conn.company.get(
-            ids = [quote_id]
+            ids = [quote_id],
+            where={"company_id": company_id}
         )
         return response
