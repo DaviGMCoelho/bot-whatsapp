@@ -104,3 +104,21 @@ create table personal."Quote"(
 
     constraint unique_code_per_scope unique (code, company_id)
 );
+
+create table personal."Memory_Type"(
+	id int generated always as identity primary key,
+	memory_type varchar(50) not null,
+    description TEXT not null,
+    active boolean not null default true,
+    created_at timestamptz default now() not null
+);
+
+create table personal."Memory"(
+	id int generated always as identity primary key,
+	customer_id int not null references personal."Customer"(id) on delete cascade,
+	memory_type_id int not null references personal."Memory_Type"(id),
+	company_id int not null references personal."Company"(id) on delete cascade,
+	content text not null,
+	created_at timestamptz default now() not null,
+	updated_at timestamptz default now() not null
+);
